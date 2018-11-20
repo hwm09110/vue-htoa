@@ -50,14 +50,14 @@ module.exports = {
     pwa: { // 单页插件相关配置 https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
     },
     devServer: {
-        open: true,
-        host: '0.0.0.0',
+        open: false,
+        host: '192.168.8.172',
         port: 9000,
         https: false,
         hotOnly: false,
         proxy: {
-            '/api': {
-                target: '<url>',
+            '/htoa/*': {
+                target: 'http://192.168.8.172:16619',
                 ws: true,
                 changOrigin: true
             }

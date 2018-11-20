@@ -8,37 +8,39 @@
             <div class="form">
               <Form ref="loginform" :model="loginform" :rules="formRule">
                 <FormItem prop="user">
-                  <Input type="text" v-model="loginform.user" placeholder="请输入账号">
+                  <Input type="text" v-model="loginform.user" placeholder="请输入账号" @on-keyup.enter="handleLogin">
                       <Icon type="md-person" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
                   </Input>
                 </FormItem>
                 <FormItem prop="password">
-                  <Input type="password" v-model="loginform.password" placeholder="请输入密码">
+                  <Input type="password" v-model="loginform.password" placeholder="请输入密码" @on-keyup.enter="handleLogin">
                     <Icon type="md-lock" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
                   </Input>
                 </FormItem>
                 <FormItem>
                    <Checkbox class="autoLogin" v-model="loginform.autoLogin">7天自动登录</Checkbox>
-                   <Button size="large" type="text" class="forgetPwd">忘记密码？</Button>
+                   <Button size="large" type="text" class="forgetPwd" @click="handleForgetPwd">忘记密码？</Button>
                 </FormItem>
                 <FormItem>
-                    <Button type="primary" long @click="handleLogin">登录</Button>
+                    <Button type="primary" long @click="handleLogin" >登录</Button>
                 </FormItem>
               </Form>
             </div>
           </div>
         </div>
       </div>
-      <div class="copyRight">
-        <p>Copyright©2018 广州宏途教育网络科技有限公司 All Rights Reserved 粤ICP备15058200号<br/>服务热线：020-38664641</p>
-      </div>
+      <CopyRight></CopyRight>
     </div>
 </template>
 
 <script>
 import utils from '@/assets/js/utils';
+import CopyRight from '@c/layout/CopyRight';
 
 export default {
+    components:{
+      CopyRight
+    },
     data (){
         const validateUser = (rule,value,callback) => {
           // console.log(rule);
@@ -71,7 +73,31 @@ export default {
     methods: {
       //登录处理
       handleLogin (){
-        console.log(this.loginform)
+        // console.log(this.loginform)
+        if(!this.loginform.user.trim()){
+          this.$Message.warning('请输入账号');
+          return;
+        }
+        if(!this.loginform.password.trim()){
+          this.$Message.warning('请输入密码');
+          return;
+        }
+        this.request.checkLogin({
+          'account':this.loginform.user,
+          'pswd':this.loginform.password
+        }).then(res=>{
+          console.log(res);
+          if(res.code === '200'){
+            this.$Message.success(res.message);
+            this.$router.push('/home');
+          }else{
+            this.$Message.error(res.message);
+          }
+        })
+      },
+      //跳转到找回密码页
+      handleForgetPwd (){
+        this.$router.push('/forget');
       }
     },
     created (){
@@ -126,14 +152,6 @@ export default {
           }
         }
       }
-    }
-    .copyRight{
-      font-size: 13px;
-      line-height: 22px;
-      color: #666;
-      width: 100%;
-      padding: 20px 0;
-      text-align: center;
     }
   }
 </style>

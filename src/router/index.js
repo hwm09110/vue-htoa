@@ -10,6 +10,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'index',
+      component: Home
+    },
+    {
+      path: '/home',
       name: 'home',
       component: Home
     },
@@ -20,6 +25,16 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+    },
+    {
+      path: '/forget',
+      name: 'forget',
+      component: () => import(/* webpackChunkName: "forget" */ '../views/Forget.vue')
+    },
+    {
+      path: '*',
+      name: 'error',
+      component: () => import(/* webpackChunkName: "error" */ '../views/Error.vue')
     }
   ]
 })
