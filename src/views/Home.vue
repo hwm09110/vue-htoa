@@ -44,10 +44,10 @@ import Header from '@c/layout/Header';
 import TopNav from '@c/layout/TopNav';
 import UserInfo from '@c/layout/UserInfo';
 import NavGroup from '@c/layout/NavGroup';
-import NewMsg from '@c/layout/NewMsg';
-import Wish from '@c/layout/Wish';
-import Calendar from '@c/layout/Calendar';
-import ToItem from '@c/layout/ToItem';
+import NewMsg from '@c/home/NewMsg';
+import Wish from '@c/home/Wish';
+import Calendar from '@c/home/Calendar';
+import ToItem from '@c/home/ToItem';
 
 
 export default {
