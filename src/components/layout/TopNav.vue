@@ -1,7 +1,7 @@
 <template>
   <nav id="top-nav-wrap">
     <ul class="nav-list clearfix">
-      <li v-for="(item,index) of navList" :key="index" :class="{item,active:item.isActive}" @click="handleItemClick(item)">{{item.name}}</li>
+      <li v-for="(item,index) of topModules" :key="index" :class="{item,active:item.isActive}" @click="handleItemClick(item)">{{item.name}}</li>
     </ul>
     <TopSearch style="float:right; margin-top:10px; margin-right:15px;"></TopSearch>
   </nav>
@@ -9,24 +9,28 @@
 
 <script>
 import TopSearch from '@c/layout/TopSearch'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'TopNav',
   components:{
     TopSearch
   },
   data (){
-    return {
-      navList: [
-        {name:'首页',path:'/home',isActive:true},
-        {name:'新闻中心',path:'/home',isActive:false},
-        {name:'行政人事',path:'/home',isActive:false},
-        {name:'个人办公',path:'/home',isActive:false}
-      ]
-    }
+    return {}
+  },
+  computed:{
+    ...mapGetters(['topModules'])
   },
   methods: {
     handleItemClick (item){
-      console.log(item);
+      // console.log(item);
+      this.topModules.forEach(element => {
+        element.isActive = false;
+        if(item.name === element.name){
+          element.isActive = true;
+        }
+      });
     }
   },
   created (){

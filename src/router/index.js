@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../views/Home.vue'
+import Index from '../views/Index'
+import Error from '../views/Error'
+import PurchaseIndex from '../views/purchase/Index'
 
 Vue.use(Router)
 
@@ -11,12 +13,32 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: Home
-    },
-    {
-      path: '/home',
-      name: 'home',
-      component: Home
+      component: Index,
+      redirect:'/home',
+      children:[
+        {
+          path: 'home',
+          name: 'home',
+          component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+        },
+        {
+          path:'purchase',
+          redirect:'/purchase/apply',
+          component:PurchaseIndex,
+          children:[
+            {
+              path:'apply',
+              name: 'purchase_apply',
+              component: () => import(/* webpackChunkName: "purchase_apply" */ '../views/purchase/Apply.vue')
+            },
+            {
+              path:'applylist',
+              name: 'purchase_applylist',
+              component: () => import('../views/purchase/ApplyList.vue')
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/login',
@@ -34,7 +56,7 @@ export default new Router({
     {
       path: '*',
       name: 'error',
-      component: () => import(/* webpackChunkName: "error" */ '../views/Error.vue')
+      component: Error
     }
   ]
 })

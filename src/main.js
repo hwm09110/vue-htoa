@@ -7,6 +7,7 @@ import request from './request';
 
 Vue.config.productionTip = false
 Vue.use(iView);
+// 挂载request到Vue property
 Vue.prototype.request = request;
 
 import '@/assets/scss/reset';
