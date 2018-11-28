@@ -5,11 +5,13 @@
       <h2>黄伟明</h2>
       <div class="entry">[个人中心]</div>
     </div>
-    <span class="logout">退出</span>
+    <span class="logout" @click="handleLogout">退出</span>
   </div>
 </template>
 
 <script>
+import Cookies from 'js-cookie'
+
 export default {
   name: 'UserInfo',
   data (){
@@ -19,6 +21,12 @@ export default {
       }
   },
   methods: {
+    //退出登录
+    handleLogout () {
+      Cookies.remove('isLogin');
+      this.$store.dispatch('setLoginStatus',false);
+      this.$router.push('/login');
+    }
   },
   created (){
   },

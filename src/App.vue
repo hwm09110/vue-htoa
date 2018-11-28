@@ -4,6 +4,17 @@
   </div>
 </template>
 
+<script>
+export default {
+  watch:{
+    $route(to,from) {
+    }
+  },
+  created () {
+  }
+}
+</script>
+
 <style lang="scss">
   html,body{
     width: 100%;

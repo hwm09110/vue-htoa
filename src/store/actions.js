@@ -10,9 +10,17 @@ const getTopModule = ({commit}) => {
       {name:'个人办公',path:'/home',isActive:false}
     ]
     commit(types.SET_TOPMODULE,modules)
-  },30)
+  },3000)
 }
 
+//存储登录态
+const setLoginStatus = ({commit},status) => {
+  console.log('dispatch-setLoginStatus',status)
+  commit(types.SET_ISLOGIN,status)
+}
+
+
 export default {
-  getTopModule
+  getTopModule,
+  setLoginStatus
 }

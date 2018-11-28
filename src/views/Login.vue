@@ -1,41 +1,44 @@
 <template>
-    <div id="login-page-wrap">
-      <div class="main-wrap">
-        <div class="logo-box"></div>
-        <div class="login-box">
-          <div class="form-box">
-            <h2 class="title">欢迎登录宏途管理系统</h2>
-            <div class="form">
-              <Form ref="loginform" :model="loginform" :rules="formRule">
-                <FormItem prop="user">
-                  <Input type="text" v-model="loginform.user" placeholder="请输入账号" @on-keyup.enter="handleLogin">
-                      <Icon type="md-person" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
-                  </Input>
-                </FormItem>
-                <FormItem prop="password">
-                  <Input type="password" v-model="loginform.password" placeholder="请输入密码" @on-keyup.enter="handleLogin">
-                    <Icon type="md-lock" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
-                  </Input>
-                </FormItem>
-                <FormItem>
-                   <Checkbox class="autoLogin" v-model="loginform.autoLogin">7天自动登录</Checkbox>
-                   <Button size="large" type="text" class="forgetPwd" @click="handleForgetPwd">忘记密码？</Button>
-                </FormItem>
-                <FormItem>
-                    <Button type="primary" long @click="handleLogin" >登录</Button>
-                </FormItem>
-              </Form>
+    <transition enter-active-class="animated fadeIn" leave-active-class="animated rotateOutDownLeft" v-on:leave="animateLeave">
+      <div id="login-page-wrap" v-show="isShow">
+          <div class="main-wrap" >
+            <div class="logo-box"></div>
+            <div class="login-box">
+              <div class="form-box">
+                <h2 class="title">欢迎登录宏途管理系统</h2>
+                <div class="form">
+                  <Form ref="loginform" :model="loginform" :rules="formRule">
+                    <FormItem prop="user">
+                      <Input type="text" v-model="loginform.user" placeholder="请输入账号" @on-keyup.enter="handleLogin">
+                          <Icon type="md-person" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
+                      </Input>
+                    </FormItem>
+                    <FormItem prop="password">
+                      <Input type="password" v-model="loginform.password" placeholder="请输入密码" @on-keyup.enter="handleLogin">
+                        <Icon type="md-lock" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
+                      </Input>
+                    </FormItem>
+                    <FormItem>
+                      <Checkbox class="autoLogin" v-model="loginform.autoLogin">7天自动登录</Checkbox>
+                      <Button size="large" type="text" class="forgetPwd" @click="handleForgetPwd">忘记密码？</Button>
+                    </FormItem>
+                    <FormItem>
+                        <Button type="primary" long @click="handleLogin" >登录</Button>
+                    </FormItem>
+                  </Form>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+          <CopyRight></CopyRight>
       </div>
-      <CopyRight></CopyRight>
-    </div>
+    </transition>
 </template>
 
 <script>
 import utils from '@/assets/js/utils';
 import CopyRight from '@c/layout/CopyRight';
+import Cookies from 'js-cookie';
 
 export default {
     components:{
@@ -67,7 +70,9 @@ export default {
           formRule:{
             user: [ { validator: validateUser, trigger: 'blur' } ],
             password: []
-          }
+          },
+          //组件显示隐藏
+          isShow:false
         }
     },
     methods: {
@@ -89,7 +94,15 @@ export default {
           console.log(res);
           if(res.code === '200'){
             this.$Message.success(res.message);
-            this.$router.push('/home');
+            this.isShow = false;
+            //保存登录态
+            Cookies.set('isLogin',true);
+            //开启7天自动登录
+            this.rememberAccount();
+            this.$store.dispatch('setLoginStatus',true);
+            setTimeout(()=>{
+              this.$router.push('/home');
+            },500);
           }else{
             this.$Message.error(res.message);
           }
@@ -98,13 +111,42 @@ export default {
       //跳转到找回密码页
       handleForgetPwd (){
         this.$router.push('/forget');
+      },
+      animateLeave (){
+        console.log('animate finish!');
+      },
+      rememberAccount () {
+        if (this.loginform.autoLogin) {
+          const encrypt_user = utils.encrypt(this.loginform.user);
+          const encrypt_pwd = utils.encrypt(this.loginform.password);
+
+          Cookies.set('user', encrypt_user, { expires: 7 });
+          Cookies.set('password', encrypt_pwd, { expires: 7 });
+        }
+      },
+      //自动登录
+      autoLogin () {
+        let encrypt_user = Cookies.get('user');
+        let encrypt_password = Cookies.get('password');
+        if(encrypt_user && encrypt_password){
+          this.loginform.user = utils.decrypt(encrypt_user);
+          this.loginform.password = utils.decrypt(encrypt_password);
+          // this.handleLogin();
+        }
       }
     },
     created (){
-
+      // 取出cookie，调用接口
+      let isLogin = Cookies.get('isLogin');
+      //如果已登录，则跳到首页
+      if (isLogin) {
+        this.$router.push('/home');
+        return;
+      }
+      this.autoLogin();
     },
     mounted (){
-
+      this.isShow = true;
     }
 }
 </script>

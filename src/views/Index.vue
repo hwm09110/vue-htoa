@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="container-right">
-        <div class="main-content">
+        <div class="main-content clearfix">
           <router-view></router-view>
         </div>
       </div>
@@ -68,6 +68,7 @@ export default {
         .main-content{
           width: 100%;
           height: 100%;
+          padding: 15px;
           background-color: #fff;
         }
       }
