@@ -1,38 +1,38 @@
 <template>
-    <transition enter-active-class="animated fadeIn" leave-active-class="animated rotateOutDownLeft" v-on:leave="animateLeave">
-      <div id="login-page-wrap" v-show="isShow">
-          <div class="main-wrap" >
-            <div class="logo-box"></div>
-            <div class="login-box">
-              <div class="form-box">
-                <h2 class="title">欢迎登录宏途管理系统</h2>
-                <div class="form">
-                  <Form ref="loginform" :model="loginform" :rules="formRule">
-                    <FormItem prop="user">
-                      <Input type="text" v-model="loginform.user" placeholder="请输入账号" @on-keyup.enter="handleLogin">
-                          <Icon type="md-person" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
-                      </Input>
-                    </FormItem>
-                    <FormItem prop="password">
-                      <Input type="password" v-model="loginform.password" placeholder="请输入密码" @on-keyup.enter="handleLogin">
-                        <Icon type="md-lock" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
-                      </Input>
-                    </FormItem>
-                    <FormItem>
-                      <Checkbox class="autoLogin" v-model="loginform.autoLogin">7天自动登录</Checkbox>
-                      <Button size="large" type="text" class="forgetPwd" @click="handleForgetPwd">忘记密码？</Button>
-                    </FormItem>
-                    <FormItem>
-                        <Button type="primary" long @click="handleLogin" >登录</Button>
-                    </FormItem>
-                  </Form>
-                </div>
+  <transition enter-active-class="animated fadeIn" leave-active-class="animated rotateOutDownLeft" v-on:leave="animateLeave">
+    <div id="login-page-wrap" v-show="isShow">
+        <div class="main-wrap" >
+          <div class="logo-box"></div>
+          <div class="login-box">
+            <div class="form-box">
+              <h2 class="title">欢迎登录宏途管理系统</h2>
+              <div class="form">
+                <Form ref="loginform" :model="loginform" :rules="formRule">
+                  <FormItem prop="user">
+                    <Input type="text" v-model="loginform.user" placeholder="请输入账号" @on-keyup.enter="handleLogin">
+                        <Icon type="md-person" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
+                    </Input>
+                  </FormItem>
+                  <FormItem prop="password">
+                    <Input type="password" v-model="loginform.password" placeholder="请输入密码" @on-keyup.enter="handleLogin">
+                      <Icon type="md-lock" slot="prepend" :size="btn_size" :color="btn_color"></Icon>
+                    </Input>
+                  </FormItem>
+                  <FormItem>
+                    <Checkbox class="autoLogin" v-model="loginform.autoLogin">7天自动登录</Checkbox>
+                    <Button size="large" type="text" class="forgetPwd" @click="handleForgetPwd">忘记密码？</Button>
+                  </FormItem>
+                  <FormItem>
+                      <Button type="primary" long @click="handleLogin" >登录</Button>
+                  </FormItem>
+                </Form>
               </div>
             </div>
           </div>
-          <CopyRight></CopyRight>
-      </div>
-    </transition>
+        </div>
+        <CopyRight></CopyRight>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -101,7 +101,7 @@ export default {
             this.rememberAccount();
             this.$store.dispatch('setLoginStatus',true);
             setTimeout(()=>{
-              this.$router.push('/home');
+              this.$router.push({name: "index"});
             },500);
           }else{
             this.$Message.error(res.message);
