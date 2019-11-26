@@ -16,7 +16,7 @@ const getTopModule = ({commit}) => {
 //存储登录态
 const setLoginStatus = ({commit},status) => {
   console.log('dispatch-setLoginStatus',status)
-  commit(types.SET_ISLOGIN,status)
+  commit(types.SET_ISLOGIN, status)
 }
 
 

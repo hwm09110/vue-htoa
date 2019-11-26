@@ -87,7 +87,7 @@ export default {
           this.$Message.warning('请输入密码');
           return;
         }
-        this.request.checkLogin({
+        this.$http.checkLogin({
           'account':this.loginform.user,
           'pswd':this.loginform.password
         }).then(res=>{

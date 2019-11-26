@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 Vue.config.productionTip = false
 Vue.use(iView);
 // 挂载request到Vue property
-Vue.prototype.request = request;
+Vue.prototype.$http = request;
 
 import '@/assets/scss/reset';
 import 'iview/dist/styles/iview.css';
