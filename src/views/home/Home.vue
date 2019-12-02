@@ -18,8 +18,6 @@
     </div>
     <div class="right-box">
       <NewMsg></NewMsg>
-      <Wish></Wish>
-      <Calendar></Calendar>
       <ToItem></ToItem>
     </div>
   </div>
@@ -27,16 +25,12 @@
 
 <script>
 import NewMsg from '@c/home/NewMsg';
-import Wish from '@c/home/Wish';
-import Calendar from '@c/home/Calendar';
 import ToItem from '@c/home/ToItem';
 
 export default {
   name:'Home',
   components:{
     NewMsg,
-    Wish,
-    Calendar,
     ToItem,
   },
   data () {

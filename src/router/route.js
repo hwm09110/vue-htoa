@@ -3,14 +3,15 @@ import Router from 'vue-router'
 import Index from '../views/Index'
 import Error from '../views/Error'
 import purchase from './purchase'
+import kqxz from './kqxz' //考勤行政
 
-const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+const Home = () => import(/* webpackChunkName: "home" */ '../views/home/Home.vue')
 
 Vue.use(Router)
 
 export default new Router({
-  mode: 'hash',
-  base: process.env.BASE_URL,
+  // mode: 'hash',
+  // base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
@@ -21,10 +22,11 @@ export default new Router({
         {
           path: 'home',
           name: 'home',
-          meta: {checkAuth:true, title:"首页"},
+          meta: {title:"首页"},
           component: Home
         },
-        purchase,
+        ...kqxz,
+        ...purchase,
       ]
     },
     {

@@ -1,40 +1,68 @@
 <template>
   <div class="nav-list-box">
-    <Menu :theme="theme" :open-names="['1']" :accordion="isAccordion" :width="menu_width">
-        <Submenu name="1">
-            <template slot="title">
-                <Icon type="ios-cart" :size="iconSize"/>
-                采购管理
-            </template>
-            <MenuItem name="1-1">采购申请</MenuItem>
-            <MenuItem name="1-2">采购申请列表</MenuItem>
-            <MenuItem name="1-3">供应商管理</MenuItem>
+    <Menu
+        :active-name="leftNavActive"
+        :open-names="leftNavOpen"
+        :width="menu_width"
+        style="height:100%;"
+        :accordion="isAccordion"
+        v-if="isRender"
+      >
+        <Submenu 
+          :name="item.name" 
+          v-for="(item, index) of leftNavList" 
+          :key="index" 
+          v-if="handleMenu2Filter(item)">
+          <template slot="title">
+            <Icon type="md-home" size="21"/>
+            <span style="position:relative; top:3px;">{{item.text}}</span>
+          </template>
+          <MenuItem
+            :name="subItem.name"
+            v-for="(subItem, i) of item.subNav"
+            :key="i"
+            v-if="handleMenu3Filter(subItem) "
+            :to="{name: subItem.name}"
+          >
+            <span style="margin-left:8px;">{{subItem.text}}</span>
+          </MenuItem>
         </Submenu>
-        <Submenu name="2">
-            <template slot="title">
-                <Icon type="ios-basket" :size="iconSize"/>
-                仓库管理
-            </template>
-            <MenuItem name="2-1">仓库列表</MenuItem>
-            <MenuItem name="2-2">库存商品管理</MenuItem>
-            <MenuItem name="2-3">库存商品进销存管理</MenuItem>
-        </Submenu>
-    </Menu>
+      </Menu>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex';
 export default {
   name: 'LeftNav',
   data (){
     return {
+      iconSize: 20,
       theme: 'light',
-      menu_width:'auto',
-      isAccordion:true, //是否开启手风琴模式，开启后每次至多展开一个子菜单
-      iconSize:20
+      menu_width: 'auto',
+      isAccordion: false, //是否开启手风琴模式，开启后每次至多展开一个子菜单
+      isRender: true,
     }
   },
+  computed: {
+    ...mapState(['leftNavList', 'leftNavOpen', 'leftNavActive']),
+  },
+  watch: {
+    leftNavOpen: function(newVal, oldVal) {
+      this.isRender = false
+      this.$nextTick(() => {
+        this.isRender = true
+      });
+    },
+  },
   methods: {
+    handleMenu2Filter() {
+      return true
+    },
+
+    handleMenu3Filter() {
+      return true
+    }
   },
   created (){
   },

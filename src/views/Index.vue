@@ -1,19 +1,19 @@
 <template>
   <div id="home">
-    <Header></Header>
-    <TopNav></TopNav>
-    <div class="container-main clearfix">
+    <Header />
+    <div class="container-main cls">
       <div class="container-left">
-        <UserInfo></UserInfo>
+        <UserInfo />
         <div class="nav-group-wrap" v-show="!isShowNavList">
-          <NavGroup></NavGroup>
+          <NavGroup />
         </div>
         <div class="nav-list-wrap" v-show="isShowNavList">
-          <LeftNav></LeftNav>
+          <LeftNav />
         </div>
       </div>
       <div class="container-right">
-        <div class="main-content clearfix">
+        <Sitepath />
+        <div class="main-content cls">
           <router-view></router-view>
         </div>
       </div>
@@ -27,6 +27,7 @@ import TopNav from '@c/layout/TopNav';
 import UserInfo from '@c/layout/UserInfo';
 import NavGroup from '@c/layout/NavGroup';
 import LeftNav from '@c/layout/LeftNav';
+import Sitepath from '@c/layout/Sitepath';
 
 export default {
   name: 'Index',
@@ -35,7 +36,8 @@ export default {
     TopNav,
     UserInfo,
     NavGroup,
-    LeftNav
+    LeftNav,
+    Sitepath,
   },
   data () {
     return {
@@ -44,7 +46,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('getTopModule')
+    this.$store.dispatch('getTopNavList') //拉取顶部导航菜单
   }
 }
 </script>
@@ -62,13 +64,13 @@ export default {
       .container-right{
         float: left;
         width: calc(100% - 265px);
-        background-color: #F9F9F9;
-        padding: 15px;
+        background-color: #f1f4f7;
         // min-height: 1358px;
         .main-content{
           width: 100%;
           height: 100%;
           padding: 15px;
+          margin: 0 15px 15px;
           background-color: #fff;
         }
       }

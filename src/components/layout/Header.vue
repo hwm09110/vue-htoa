@@ -1,34 +1,52 @@
 <template>
   <header class="top-wrap">
-    <div class="img-logo"></div>
+    <div class="logo-box"></div>
+    <div class="nav-wrap">
+      <TopNav/>
+    </div>
+    <!-- <div class="nowtime">{{nowTime}}</div> -->
   </header>
 </template>
 
 <script>
+import TopNav from "./TopNav"
 export default {
   name: 'Header',
+  components: {
+    TopNav
+  },
+  data() {
+    return {
+      nowTime: '',
+    }
+  },
+  methods: {
+    
+  },
+  mounted() {
+    
+  }
 }
 </script>
 
 <style lang="scss" scoped>
   .top-wrap{
-    position: relative;
-    width: 100%;
-    min-width: 1300px;
-    height: 75px;
-    background: url('../../assets/img/titlebg.png') no-repeat;
-    background-size: cover;
-    background-position: center;
-    .img-logo{
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-      width: 395px;
-      height: 46px;
-      background: url('../../assets/img/logo.png') no-repeat;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .logo-box{
+      width: 264px;
+      height: 64px;
+      background-image: url('../../assets/img/logo.png');
+      background-size: 264px 64px;
+      border-bottom: 1px solid #eee;
+    }
+    .nav-wrap{
+      flex: 1;
+      border-left: 1px solid #eee;
+    }
+    .nowtime{
+      color: #666;
     }
   }
 </style>

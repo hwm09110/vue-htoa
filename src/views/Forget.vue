@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import utils from '@/assets/js/utils';
+import utils from '@/utils';
 import CopyRight from '@c/layout/CopyRight';
 
 export default {

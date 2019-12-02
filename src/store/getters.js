@@ -1,2 +1,3 @@
 export const isLogin = (state) => state.isLogin;
-export const topModules = (state) => state.topModules;
+export const topNavList = (state) => state.topNavList;
+export const leftNavList = (state) => state.leftNavList;

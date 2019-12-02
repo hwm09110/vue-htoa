@@ -11,8 +11,8 @@ Vue.use(iView);
 // 挂载request到Vue property
 Vue.prototype.$http = request;
 
-import '@/assets/scss/reset';
 import 'iview/dist/styles/iview.css';
+import '@/assets/scss/reset';
 import 'animate.css';
 
 //刷新页面后，vuex依旧保存者登录态
