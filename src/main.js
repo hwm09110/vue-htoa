@@ -8,18 +8,14 @@ import Cookies from 'js-cookie';
 
 Vue.config.productionTip = false
 Vue.use(ViewUI);
-// 挂载request到Vue property
 Vue.prototype.$http = request;
 
-import 'view-design/dist/styles/iview.css';
-import '@/assets/scss/reset';
 import 'animate.css';
+import 'view-design/dist/styles/iview';
+import '@/assets/scss/reset';
+import '@/assets/scss/common';
+import '@/assets/css/resetIview'; //一些覆盖iview原有的样式
 
-//刷新页面后，vuex依旧保存者登录态
-let isLogin = Cookies.get('isLogin');
-if(isLogin){
-  store.dispatch('setLoginStatus',isLogin);
-}
 
 new Vue({
   router,

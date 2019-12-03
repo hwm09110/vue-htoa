@@ -4,8 +4,8 @@
     <div class="search-wrap">
       <div class="item-box">
         <span class="label">工作流 </span>
-        <Select v-model="model1" class="search-select">
-            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        <Select class="search-select">
+            <Option v-for="item in cateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </div>
       <div class="item-box">
@@ -16,11 +16,11 @@
       <br/>
       <div class="item-box">
         <span class="label">创建人 </span>
-        <Input v-model="value" placeholder="输入创建人姓名" class="search-input" />
+        <Input placeholder="输入创建人姓名" class="search-input" />
       </div>
       <div class="item-box">
         <span class="label">审核内容 </span>
-        <Input v-model="value" placeholder="输入审核内容" class="search-input" />
+        <Input placeholder="输入审核内容" class="search-input" />
       </div>
       <div class="item-box">
         <Button type="primary">查询</Button>
@@ -36,6 +36,9 @@
     <div class="table-wrap">
       <Table :columns="tableColumns" :data="tableData"></Table>
     </div>
+    <div class="page-wrap">
+      <Page :total="100" show-total show-elevator />
+    </div>
   </div>
 </template>
 
@@ -44,6 +47,7 @@ export default {
   name: "TodoList",
   data() {
     return {
+      cateList: [],
       tableColumns: [
         {
           title: '工作流',
@@ -73,7 +77,45 @@ export default {
           title: '状态',
           key: 'status'
         },
-      ]
+      ],
+      tableData: [
+        {
+          category: "test",
+          content: "test content",
+          nowNode: "部门经理",
+          department: "技术部",
+          creater: "张三",
+          time: "2019-12-03 15:20",
+          status: "正常",
+        },
+        {
+          category: "test",
+          content: "test content",
+          nowNode: "部门经理",
+          department: "技术部",
+          creater: "张三",
+          time: "2019-12-03 15:20",
+          status: "正常",
+        },
+        {
+          category: "test",
+          content: "test content",
+          nowNode: "部门经理",
+          department: "技术部",
+          creater: "张三",
+          time: "2019-12-03 15:20",
+          status: "正常",
+        },
+        {
+          category: "test",
+          content: "test content",
+          nowNode: "部门经理",
+          department: "技术部",
+          creater: "张三",
+          time: "2019-12-03 15:20",
+          status: "正常",
+        }
+      ],
     }
   }
 }
@@ -81,28 +123,6 @@ export default {
 
 
 <style lang="scss" scoped>
-.page-title{
-  font-size: 18px;
-  margin-bottom: 25px;
-}
-
-.search-wrap{
-  .search-time,
-  .search-select,
-  .search-input{
-    width: 200px;
-    margin-left: 5px;
-  }
-  .item-box{
-    display: inline-block;
-    margin-left: 30px;
-    margin-bottom: 20px;
-  }
-}
-
-.tab-wrap{
-  margin-top: 15px;
-}
 
 </style>
 

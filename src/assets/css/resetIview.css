@@ -1,0 +1,4 @@
+/* iview 部分样式覆盖 */
+.ivu-table-header thead tr th {
+  padding: 15px 0;
+}

@@ -1,0 +1,29 @@
+// 公共样式
+.page-title{
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.search-wrap{
+  .search-time,
+  .search-select,
+  .search-input{
+    width: 200px;
+    margin-left: 5px;
+  }
+  .item-box{
+    display: inline-block;
+    margin-left: 30px;
+    margin-bottom: 20px;
+  }
+}
+
+.tab-wrap{
+  margin-top: 15px;
+}
+
+.page-wrap{
+  padding: 15px 0;
+  display: flex;
+  justify-content: flex-end;
+}

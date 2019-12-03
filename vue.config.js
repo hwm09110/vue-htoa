@@ -18,7 +18,7 @@ module.exports = {
         }
         Object.assign(config, { // 开发生产共同配置
             resolve: {
-                extensions: ['.js', '.vue', '.json', '.scss'],
+                extensions: ['.js', '.vue', '.json', '.scss', '.css'],
                 alias: {
                   'vue$': 'vue/dist/vue.esm.js',
                   '@': path.resolve(__dirname, './src'),
