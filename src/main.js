@@ -2,16 +2,16 @@ import Vue from 'vue';
 import App from './App';
 import router from './router/index';
 import store from './store/index';
-import iView from 'iview';
+import ViewUI from 'view-design';
 import request from './request';
 import Cookies from 'js-cookie';
 
 Vue.config.productionTip = false
-Vue.use(iView);
+Vue.use(ViewUI);
 // 挂载request到Vue property
 Vue.prototype.$http = request;
 
-import 'iview/dist/styles/iview.css';
+import 'view-design/dist/styles/iview.css';
 import '@/assets/scss/reset';
 import 'animate.css';
 
