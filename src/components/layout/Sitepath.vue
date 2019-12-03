@@ -3,6 +3,7 @@
     <span class="home-icon"></span>
     <ul class="site-path">
       <li>首页</li>
+      <li v-for="(text, index) of sitePaths" :key="index">{{text}}</li>
     </ul>
     <div class="datetime">{{nowTime}}</div>
   </section>
@@ -10,6 +11,7 @@
 
 <script>
 import { getTodayAndWeek } from "@/utils/moment"
+import { mapState } from 'vuex'
 export default {
   name: "Sitepath",
   data() {
@@ -18,10 +20,8 @@ export default {
       pathName: [],
     }
   },
-  watch: {
-    '$route': function(newVal) {
-      console.log(newVal)
-    }
+  computed: {
+    ...mapState(['sitePaths'])
   },
   methods: {
     // 获取当天日期
@@ -29,10 +29,6 @@ export default {
       this.nowTime = getTodayAndWeek()
     },
 
-    //获取当前页面路径
-    getNowLocation() {
-
-    }
   },
   mounted() {
     this.getNowTime()

@@ -10,4 +10,10 @@ export default {
   [types.SET_LEFTNAVLIST](state, leftNavList){
     state.leftNavList = leftNavList
   },
+  [types.SET_MYNAVLIST](state, myNavList){
+    state.myNavList = myNavList
+  },
+  [types.SET_SITEPATHS](state, sitePaths){
+    state.sitePaths = sitePaths
+  },
 }

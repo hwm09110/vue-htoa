@@ -3,7 +3,7 @@
     <ul class="nav cls">
       <li class="item" v-for="(item, index) of topNavList" :key="index" :class="{'active': item.name == topNavActive}">
         <span class="text" @click="handleFirstClick(item)">{{item.text}}</span>
-        <ul class="second-nav" v-if="item.subNav && item.subNav.length > 0">
+        <ul class="second-nav" v-if="item.subNav && item.subNav.length > 0 && item.name !='home' ">
           <li v-for="(secondItem , i) of item.subNav" :key="i">
             <span class="text" @click="handleSecondClick(secondItem)">{{secondItem.text}}</span>
             <ul class="sub-nav" v-if="secondItem.subNav && secondItem.subNav.length > 0">
@@ -21,14 +21,11 @@
 
 <script>
 import { mapState } from 'vuex'
-
 export default {
   name: "TopNav",
   data() {
     return {
     }
-  },
-  watch: {
   },
   computed: {
     ...mapState(['topNavList', 'topNavActive'])
@@ -51,7 +48,8 @@ export default {
 
     //点击第二级菜单时，默认打开第一个页面
     handleSecondClick(item) {
-      console.log(item.subNav[0]['name'])
+      console.log('点击第二级菜单时', item)
+      this.$store.state.leftNavOpen = []
       if(item.subNav.length > 0) {
         this.$router.push({name: item.subNav[0]['name']})
       }
@@ -59,6 +57,7 @@ export default {
 
     //点击第三级菜单
     handleThirdClick(item) {
+      console.log('点击第三级菜单', item)
       if(item.name){  
         this.$router.push({name: item.name})
       }

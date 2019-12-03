@@ -40,6 +40,7 @@ export default {
   position: relative;
   padding-bottom: 10px;
   border-bottom: 1px solid #F0F0F0;
+  background-color: #fff;
   .portrait{
     display: inline-block;
     width: 70px;

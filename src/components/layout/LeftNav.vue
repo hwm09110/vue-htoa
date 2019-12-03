@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import { mapState } from 'vuex'
 export default {
   name: 'LeftNav',
   data (){
@@ -45,14 +45,17 @@ export default {
     }
   },
   computed: {
-    ...mapState(['leftNavList', 'leftNavOpen', 'leftNavActive']),
+    ...mapState(['leftNavList', 'leftNavOpen', 'leftNavActive', 'topNavActive']),
   },
   watch: {
     leftNavOpen: function(newVal, oldVal) {
-      this.isRender = false
-      this.$nextTick(() => {
-        this.isRender = true
-      });
+      console.log('leftNavOpen isChange',newVal, oldVal)
+      if(newVal[0] != oldVal[0]){
+        this.isRender = false
+        this.$nextTick(() => {
+          this.isRender = true
+        })
+      }
     },
   },
   methods: {

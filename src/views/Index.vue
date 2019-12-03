@@ -4,9 +4,7 @@
     <div class="container-main cls">
       <div class="container-left">
         <UserInfo />
-        <div class="nav-group-wrap" v-show="!isShowNavList">
-          <NavGroup />
-        </div>
+        <MyNav style="border-bottom:5px solid #f1f4f7;" />
         <div class="nav-list-wrap" v-show="isShowNavList">
           <LeftNav />
         </div>
@@ -25,8 +23,8 @@
 import Header from '@c/layout/Header';
 import TopNav from '@c/layout/TopNav';
 import UserInfo from '@c/layout/UserInfo';
-import NavGroup from '@c/layout/NavGroup';
 import LeftNav from '@c/layout/LeftNav';
+import MyNav from '@c/layout/MyNav';
 import Sitepath from '@c/layout/Sitepath';
 
 export default {
@@ -35,8 +33,8 @@ export default {
     Header,
     TopNav,
     UserInfo,
-    NavGroup,
     LeftNav,
+    MyNav,
     Sitepath,
   },
   data () {
@@ -67,7 +65,6 @@ export default {
         background-color: #f1f4f7;
         // min-height: 1358px;
         .main-content{
-          width: 100%;
           height: 100%;
           padding: 15px;
           margin: 0 15px 15px;

@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '../views/Index'
 import Error from '../views/Error'
-import purchase from './purchase'
+import my from './my' //我的待办、我的申请...
 import kqxz from './kqxz' //考勤行政
+import purchase from './purchase'
 
 const Home = () => import(/* webpackChunkName: "home" */ '../views/home/Home.vue')
 
@@ -23,8 +24,10 @@ export default new Router({
           path: 'home',
           name: 'home',
           meta: {title:"首页"},
-          component: Home
+          component: Home,
+          redirect: {name: "my_todoList"},
         },
+        ...my,
         ...kqxz,
         ...purchase,
       ]

@@ -101,10 +101,10 @@ export default {
             this.$Message.success(res.message)
             this.isShow = false
             //保存登录态
-            Cookies.set('isLogin',true)
+            localStorage.setItem('isLogin', 1)
             //开启7天自动登录
             this.rememberAccount();
-            this.$store.dispatch('setLoginStatus',true)
+            this.$store.dispatch('setLoginStatus', 1)
             setTimeout(()=>{
               this.$router.push({name: "index"})
             },500);
@@ -116,11 +116,11 @@ export default {
 
       //跳转到找回密码页
       handleForgetPwd (){
-        this.$router.push('/forget');
+        this.$router.push({name: 'forget'})
       },
 
       animateLeave (){
-        console.log('animate finish!');
+        console.log('animate finish!')
       },
 
       rememberAccount () {
@@ -147,10 +147,10 @@ export default {
     },
     created (){
       // 取出cookie，调用接口
-      let isLogin = Cookies.get('isLogin');
+      let isLogin = Cookies.get('isLogin')
       //如果已登录，则跳到首页
       if (isLogin) {
-        this.$router.push('/home');
+        this.$router.push({name: "home"});
         return;
       }
       this.autoLogin();
