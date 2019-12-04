@@ -1,13 +1,7 @@
-import http from './http';
-import Qs from 'qs';
 
-//登录
-const checkLogin = (params) => http.post('/htoa/qx/denglu', Qs.stringify(params)).then(res=>{ return res.data});
+import common from './common'
+import kqxz from './kqxz' //考勤行政模块
 
+const API = [ common, kqxz ]
 
-
-
-export default {
-    checkLogin
-};
-
+export default  Object.assign({}, ...API)
