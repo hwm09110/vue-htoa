@@ -88,6 +88,33 @@ export const topNavList = [
         ],
       },
       {
+        text: '出差管理',
+        name: 'businesstripMage',
+        level_id: '1_3',
+        subNav: [
+          {
+            text: '出差申请',
+            name: 'businesstripMage_apply',
+            level_id: '1_3_1',
+          },
+          {
+            text: '我的出差记录',
+            name: 'businesstripMage_applylist',
+            level_id: '1_3_2',
+          },
+          {
+            text: '出差审批',
+            name: 'businesstripMage_check',
+            level_id: '1_3_3',
+          },
+          {
+            text: '公司出差记录',
+            name: 'businesstripMage_allRecord',
+            level_id: '1_3_4',
+          },
+        ],
+      },
+      {
         text: '加班管理',
         name: 'overtimeMage',
         level_id: '1_2',

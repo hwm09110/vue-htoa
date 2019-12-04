@@ -4,6 +4,7 @@ const TodoList = () => import(/* webpackChunkName: "my" */ '../../views/my/TodoL
 const ApplyList = () => import(/* webpackChunkName: "my" */ '../../views/my/ApplyList.vue')
 const NoticeList = () => import(/* webpackChunkName: "my" */ '../../views/my/NoticeList.vue')
 const MailList = () => import(/* webpackChunkName: "my" */ '../../views/my/MailList.vue')
+const Info = () => import(/* webpackChunkName: "my" */ '../../views/my/Info.vue')
 
 export default [
   {
@@ -29,5 +30,11 @@ export default [
     name: 'my_mailList',
     meta: {title:"通讯录"},
     component: MailList
+  },
+  {
+    path:'my/info',
+    name: 'my_info',
+    meta: {title:"个人中心"},
+    component: Info
   },
 ]

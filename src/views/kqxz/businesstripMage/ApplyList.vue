@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">我的预约</h1>
+    <h1 class="page-title">我的出差记录</h1>
     <div class="tab-wrap">
       <Tabs value="name1" :animated="false">
         <TabPane label="处理中" name="name1"></TabPane>
@@ -27,46 +27,40 @@ export default {
       cateList: [],
       tableColumns: [
         {
-          title: '会议主题',
-          key: 'theme'
+          title: '出差时间',
+          key: 'time'
         },
         {
-          title: '会议室',
-          key: 'roomName'
+          title: '出差地点',
+          key: 'address'
         },
         {
-          title: '会议开始时间',
-          key: 'stime'
+          title: '出差报告',
+          key: 'isReport'
         },
         {
           title: '下一步操作人',
           key: 'next'
         },
+        {
+          title: '审批结果',
+          key: 'status'
+        },
       ],
       tableData: [
         {
-          theme: "事件",
-          roomName: "一楼会议室",
-          stime: "2019-12-03 15:20",
+          time: "2019-11-15 10:30",
+          address: "北京",
+          isReport: "不需要提交",
           next: "李白",
+          status: "待审批",
         },
         {
-          theme: "事件",
-          roomName: "一楼会议室",
-          stime: "2019-12-03 15:20",
-          next: "李白",
-        },
-        {
-          theme: "事件",
-          roomName: "一楼会议室",
-          stime: "2019-12-03 15:20",
-          next: "李白",
-        },
-        {
-          theme: "事件",
-          roomName: "一楼会议室",
-          stime: "2019-12-03 15:20",
-          next: "李白",
+          time: "2019-11-15 10:30",
+          address: "北京",
+          isReport: "待提交/修改",
+          next: "李白2",
+          status: "待审批",
         },
       ],
     }

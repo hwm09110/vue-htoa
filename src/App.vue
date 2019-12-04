@@ -22,6 +22,7 @@ export default {
   }
   #app{
     width: 100%;
+    min-width: 1200px;
     height: 100%;
     min-height: 100%;
     background-color: #f1f4f7;

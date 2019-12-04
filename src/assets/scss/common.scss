@@ -1,9 +1,14 @@
 // 公共样式
+
+// 页面title
 .page-title{
   font-size: 18px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #dcdcdc;
   margin-bottom: 25px;
 }
 
+// 搜索
 .search-wrap{
   .search-time,
   .search-select,
@@ -18,17 +23,19 @@
   }
 }
 
+// tab
 .tab-wrap{
   margin-top: 15px;
 }
 
+// 分页
 .page-wrap{
   padding: 15px 0;
   display: flex;
   justify-content: flex-end;
 }
 
-
+// 分隔线、分隔块
 .div-block{
   background-color: #f1f4f7;
   height: 6px;
@@ -36,4 +43,29 @@
 .div-line{
   background-color: #eee;
   height: 1px;
+}
+
+
+// 表格
+.cus-table{
+  border-collapse: collapse;
+  width: 100%;
+  tr{
+    th,
+    td{
+      border: 1px solid #dcdcdc;
+      padding: 10px;
+      line-height: 1.5;
+      text-align: center;
+      vertical-align: middle;
+    }
+    th{
+      font-size: 15px;
+      font-weight: 600;
+      background-color: #f8f8f9;
+    }
+    &:hover{
+      background-color: #ebf7ff;
+    }
+  }
 }

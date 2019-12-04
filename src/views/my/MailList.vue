@@ -41,11 +41,29 @@ export default {
                 expand: true,
               },
               {
-                title: '技术',
+                title: '技术支持',
                 expand: true,
                 children: [
                   {
-                      title: '开放部'
+                      title: '开放部',
+                      expand: false,
+                      children: [
+                        {
+                          title: "后端开放"
+                        },
+                        {
+                          title: "前端开放"
+                        },
+                        {
+                          title: "移动端开放"
+                        },
+                        {
+                          title: "UI设计"
+                        },
+                        {
+                          title: "测试"
+                        },
+                      ]
                   },
                   {
                       title: '研发部'

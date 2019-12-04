@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      <h2 class="title">请假申请</h2>
+      <h2 class="title">出差申请</h2>
     </div>
     
     <div class="applyer-info">
@@ -27,44 +27,36 @@
       <div class="form-box">
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>请假类别：</span>
-            <Select class="form-select">
-                <Option v-for="item in cateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-            <span class="tips">一次性申请事假不超过10天</span>
-          </div>
-        </div>
-        <div class="form-row">
-          <Checkbox v-model="isAgree" style="margin-left:76px;">本人同意授权人力资源部，优先采用事假时长与加班时长相抵扣的原则计算相关薪酬</Checkbox>
-        </div>
-        <div class="form-row">
-          <div class="form-item">
-            <span class="label"><i class="require"></i>离开日期：</span>
-            <DatePicker type="datetime" placeholder="开始时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker>
-          </div>
-          <div class="form-item" style="margin-left:50px;">
-            <span class="label"><i class="require"></i>报到日期：</span>
+            <span class="label"><i class="require"></i>出差时间：</span>
+            <DatePicker type="datetime" placeholder="开始时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker> 至 
             <DatePicker type="datetime" placeholder="结束时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker>
           </div>
-          <span class="calcTime-tips">*您的请假时间，将从请假之日起开始计算（包含节假日）。如分次休假，请分次提交。</span>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>请假天数：</span>
-            <Input readonly style="width:100px;"/> 天
-            <Input readonly style="width:100px;"/> 时
+            <span class="label"><i class="require"></i>出差地点：</span>
+            <Input class="form-input"/>
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>工作代理人：</span>
-            <Input class="form-input" />
+            <span class="label"><i class="require"></i>出差原因：</span>
+            <Input style="width:800px;" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>请假原因：</span>
-            <Input style="width:800px;" type="textarea" :rows="5" placeholder="填写请假原因" />
+            <span class="label" style="width: 150px;"><i class="require"></i>是否提交出差报告：</span>
+            <RadioGroup class="form-radio">
+                <Radio label="是"></Radio>
+                <Radio label="否"></Radio>
+            </RadioGroup>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-item">
+            <span class="label"><i class="require"></i>出差安排：</span>
+            <Input style="width:800px;" type="textarea" :rows="5" placeholder="填写出差安排" />
           </div>
         </div>
       </div>
@@ -149,6 +141,9 @@ export default {
         .form-input{
           width: 200px;
           margin-left: 5px;
+        }
+        .form-radio{
+          margin-left: 4px;
         }
       }
       .tips{
