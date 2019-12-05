@@ -1,6 +1,8 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">请假审批</h1>
+    <div class="page-title">
+      <h2 class="title">请假审批</h2>
+    </div>
     <div class="tab-wrap">
       <Tabs value="name1" :animated="false">
         <TabPane label="待审批" name="name1"></TabPane>

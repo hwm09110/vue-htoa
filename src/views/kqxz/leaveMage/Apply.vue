@@ -89,15 +89,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-title{
-  padding-bottom: 15px;
-  margin-bottom: 10px;
-  border-bottom: solid 1px #ccc;
-  .title{
-    font-size: 18px;
-  }
-}
-
 // 申请人信息
 .applyer-info{
   background-color: #F9F9F9;

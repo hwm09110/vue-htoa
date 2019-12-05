@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      <h2 class="title">出差申请</h2>
+      <h2 class="title">提建议</h2>
     </div>
     
     <div class="applyer-info">
@@ -18,7 +18,7 @@
         <span class="item-val">WEB前端开发工程师</span>
       </div>
       <div class="info-item">
-        <span class="item-label">单号： </span>
+        <span class="item-label">问题编号： </span>
         <span class="item-val">20191204141056</span>
       </div>
     </div>
@@ -27,41 +27,28 @@
       <div class="form-box">
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>出差时间：</span>
-            <DatePicker type="datetime" placeholder="开始时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker> 至 
-            <DatePicker type="datetime" placeholder="结束时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker>
+            <span class="label"><i class="require"></i>反馈对象：</span>
+            <Select class="form-select">
+                <Option v-for="item in cateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>出差地点：</span>
-            <Input class="form-input"/>
+            <span class="label"><i class="require"></i>问题：</span>
+            <Input style="width:800px;" type="textarea" :rows="8" placeholder="填写问题" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>出差原因：</span>
-            <Input style="width:800px;" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-item">
-            <span class="label" style="width: 150px;"><i class="require"></i>是否提交出差报告：</span>
-            <RadioGroup class="form-radio">
-                <Radio label="是"></Radio>
-                <Radio label="否"></Radio>
-            </RadioGroup>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-item">
-            <span class="label"><i class="require"></i>出差安排：</span>
-            <Input style="width:800px;" type="textarea" :rows="5" placeholder="填写出差安排" />
+            <span class="label"><i class="require"></i>建议方案：</span>
+            <Input style="width:800px;" type="textarea" :rows="8" placeholder="填写建议方案" />
           </div>
         </div>
       </div>
       <div class="form-operate">
         <Button type="primary" class="submit-btn">提交</Button>
+        <Button style="margin-left:30px;">取消</Button>
       </div>
     </div>
 
@@ -70,7 +57,7 @@
 
 <script>
 export default {
-  name:'Apply',
+  name:'Suggest',
   data () {
     return {
       cateList: [],
@@ -132,9 +119,6 @@ export default {
         .form-input{
           width: 200px;
           margin-left: 5px;
-        }
-        .form-radio{
-          margin-left: 4px;
         }
       }
       .tips{

@@ -1,6 +1,8 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">我的申请记录</h1>
+    <div class="page-title">
+      <h2 class="title">我的申请记录</h2>
+    </div>
     <div class="tab-wrap">
       <Tabs value="name1" :animated="false">
         <TabPane label="处理中" name="name1"></TabPane>

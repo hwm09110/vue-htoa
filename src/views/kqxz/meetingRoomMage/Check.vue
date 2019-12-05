@@ -1,6 +1,8 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">会议室管理</h1>
+    <div class="page-title">
+      <h2 class="title">会议室管理</h2>
+    </div>
     <div class="search-wrap">
       <div class="item-box">
         <span class="label">会议开始时间 </span>

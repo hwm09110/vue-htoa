@@ -1,11 +1,13 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">个人中心</h1>
+    <div class="page-title">
+      <h2 class="title">个人中心</h2>
+    </div>
     <div class="tab-wrap">
-      <Tabs type="card">
-        <TabPane label="基本信息"></TabPane>
-        <TabPane label="爱宏途我建议"></TabPane>
-    </Tabs>
+      <Tabs type="card" @on-click="handleTabClick">
+        <TabPane label="基本信息" name="1"></TabPane>
+        <TabPane label="爱宏途我建议"  name="2"></TabPane>
+      </Tabs>
     </div>
     <div class="main-wrap">
       <div class="info-content">
@@ -168,6 +170,14 @@ export default {
   data() {
     return {
 
+    }
+  },
+  methods: {
+    handleTabClick(value) {
+      console.log(value)
+      if(value == 2) {
+        this.$router.push({name: "feedback_self"})
+      }
     }
   }
 }

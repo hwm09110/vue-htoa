@@ -147,24 +147,6 @@ export default {
   padding-bottom: 100px;
 }
 
-.page-title{
-  padding-bottom: 15px;
-  margin-bottom: 10px;
-  border-bottom: solid 1px #ccc;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .title{
-    color: #666;
-    font-size: 16px;
-  }
-  .top-btn{
-    .btn{
-      margin-left: 10px;
-    }
-  }
-}
-
 .progress-wrap{
   padding: 50px 20px;
 }

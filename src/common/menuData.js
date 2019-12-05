@@ -26,7 +26,7 @@ export const topNavList = [
           },
           {
             text: '通讯录',
-            name: 'my_mailList',
+            name: 'my_txlList',
             level_id: '0_1_4',
           },
         ],
@@ -138,6 +138,24 @@ export const topNavList = [
             text: '公司加班记录',
             name: 'overtimeMage_applyAllRecode',
             level_id: '1_2_4',
+          },
+        ],
+      },
+      {
+        text: '爱宏途我建议',
+        name: 'feedback',
+        level_id: '1_5',
+        subNav: [
+          {
+            text: '我的建议',
+            // name: 'my_info',
+            name: 'feedback_self',
+            level_id: '1_5_1',
+          },
+          {
+            text: '员工建议',
+            name: 'feedback_list',
+            level_id: '1_5_2',
           },
         ],
       },

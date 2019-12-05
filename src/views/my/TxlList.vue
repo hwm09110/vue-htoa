@@ -1,6 +1,8 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">通讯录</h1>
+    <div class="page-title">
+      <h2 class="title">通讯录</h2>
+    </div>
     <div class="search-wrap">
       <div class="item-box">
         <Input placeholder="输入人员姓名" class="search-input" />

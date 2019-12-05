@@ -106,21 +106,5 @@ export default {
 
 
 <style lang="scss" scoped>
-.page-title{
-  padding-bottom: 15px;
-  margin-bottom: 20px;
-  border-bottom: solid 1px #ccc;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .title{
-    font-size: 18px;
-  }
-  .top-btn{
-    .btn{
-      margin-left: 10px;
-    }
-  }
-}
 </style>
 

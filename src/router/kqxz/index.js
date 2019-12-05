@@ -19,6 +19,12 @@ const businesstripMage_detail = () => import(/* webpackChunkName: "businesstripM
 const businesstripMage_allRecord = () => import(/* webpackChunkName: "businesstripMage" */ '../../views/kqxz/businesstripMage/AllRecord.vue')
 
 
+//爱宏途我建议
+const feedback_self = () => import(/* webpackChunkName: "feedback" */ '../../views/kqxz/feedback/Self.vue')
+const feedback_list = () => import(/* webpackChunkName: "feedback" */ '../../views/kqxz/feedback/List.vue')
+const feedback_suggest = () => import(/* webpackChunkName: "feedback" */ '../../views/kqxz/feedback/Suggest.vue')
+const feedback_detail = () => import(/* webpackChunkName: "feedback" */ '../../views/kqxz/feedback/Detail.vue')
+
 
 // 加班模块
 const overtimeMage_apply = () =>
@@ -155,4 +161,32 @@ export default [
     meta: {title: '加班管理-公司加班记录'},
     component: overtimeMage_applyAllRecode,
   },
+
+  // 爱宏途我建议
+  {
+    path: 'kqxz/feedback/self',
+    name: 'feedback_self',
+    meta: {title: '爱宏途我建议-我的建议'},
+    component: feedback_self,
+  },
+  {
+    path: 'kqxz/feedback/list',
+    name: 'feedback_list',
+    meta: {title: '爱宏途我建议-员工建议'},
+    component: feedback_list,
+  },
+  {
+    path: 'kqxz/feedback/suggest',
+    name: 'feedback_suggest',
+    meta: {title: '爱宏途我建议-提建议'},
+    component: feedback_suggest,
+  },
+  {
+    path: 'kqxz/feedback/detail',
+    name: 'feedback_detail',
+    meta: {title: '爱宏途我建议-建议详情'},
+    component: feedback_detail,
+  },
+
+  
 ];

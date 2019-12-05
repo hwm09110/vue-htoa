@@ -3,7 +3,8 @@
 const TodoList = () => import(/* webpackChunkName: "my" */ '../../views/my/TodoList.vue')
 const ApplyList = () => import(/* webpackChunkName: "my" */ '../../views/my/ApplyList.vue')
 const NoticeList = () => import(/* webpackChunkName: "my" */ '../../views/my/NoticeList.vue')
-const MailList = () => import(/* webpackChunkName: "my" */ '../../views/my/MailList.vue')
+const TxlList = () => import(/* webpackChunkName: "my" */ '../../views/my/TxlList.vue')
+const TxlDetail = () => import(/* webpackChunkName: "my" */ '../../views/my/TxlDetail.vue')
 const Info = () => import(/* webpackChunkName: "my" */ '../../views/my/Info.vue')
 
 export default [
@@ -26,10 +27,16 @@ export default [
     component: NoticeList
   },
   {
-    path:'my/mailList',
-    name: 'my_mailList',
+    path:'my/txlList',
+    name: 'my_txlList',
     meta: {title:"通讯录"},
-    component: MailList
+    component: TxlList
+  },
+  {
+    path:'my/txlDetail',
+    name: 'my_txlDetail',
+    meta: {title:"通讯录"},
+    component: TxlDetail
   },
   {
     path:'my/info',

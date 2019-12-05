@@ -15,6 +15,7 @@
       <span class="back">你的申请已被退回，你可以修改并重新申请 <Button type="primary">修改申请</Button></span>
     </div>
 
+    <!-- 申请详情 -->
     <div class="apply-info">
       <div>
         <div class="info-item">
@@ -75,6 +76,7 @@
       </div>
     </div>
 
+    <!-- 审核信息 -->
     <div class="check-info">
       <div class="check-item">
         <div class="checker-info">
@@ -110,8 +112,35 @@
       </div>
     </div>
 
-    <div class="upload-file-wrap">
-      <span>上传文件</span>
+    <!-- 文件列表 -->
+    <div class="uploaded-file-wrap">
+      <div class="label">出差报告</div>
+      <div class="content">
+        <ul class="file-list">
+          <li>
+            <div class="text">附件（1个）</div>
+            <div class="operate">
+              <a href="javascript:;">下载</a>
+            </div>
+          </li>
+          <li>
+            <div class="text">2019年12月04出差北京报告.pdf</div>
+            <div class="operate">
+              <a href="javascript:;">下载</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 文件上传 -->
+    <div class="upload-wrap">
+      <UploadFile 
+        multiple
+        @on-choose="handleChooseFile" 
+        @on-delFile="handleDelFile" 
+      />
+      <Button type="primary" class="btn">提交</Button>
     </div>
 
     <!-- 待审核出现 -->
@@ -142,11 +171,28 @@
 </template>
 
 <script>
+import UploadFile from "@c/common/UploadFile"
 export default {
+  components: {
+    UploadFile
+  },
   name: "Detail",
   data() {
     return {
     }
+  },
+  methods: {
+    // 选择好文件
+    handleChooseFile(ret) {
+      console.log(ret)
+    },
+
+    // 删除选择好文件
+    handleDelFile(ret) {
+      console.log(ret)
+    },
+
+
   }
 }
 </script>
@@ -156,24 +202,6 @@ export default {
 .page-container{
   background-color: #fff;
   padding-bottom: 100px;
-}
-
-.page-title{
-  padding-bottom: 15px;
-  margin-bottom: 10px;
-  border-bottom: solid 1px #ccc;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .title{
-    color: #666;
-    font-size: 16px;
-  }
-  .top-btn{
-    .btn{
-      margin-left: 10px;
-    }
-  }
 }
 
 .msg-tips{
@@ -282,5 +310,64 @@ export default {
     }
   }
 }
+
+// 文件上传
+.upload-wrap{
+  margin-bottom: 25px;
+  .btn{
+    margin-left: 66px;
+    margin-top: 20px;
+  }
+}
+
+// 已上传的附件
+.uploaded-file-wrap{
+  background-color: #F9F9F9;
+  padding: 20px 15px;
+  margin:15px 0;
+  display: flex;
+  .label{
+    margin-top: 5px;
+    margin-right: 7px;
+  }
+  .content{
+    .file-list{
+      width: 500px;
+      li{
+        position: relative;
+        padding: 10px 10px 10px 30px;
+        display: flex;
+        background-color: #fff;
+        .text{
+          width: 90%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        .operate{
+          a{
+            margin-left: 10px;
+            text-decoration: underline;
+            color: #30A5FF;
+          }
+        }
+        &:first-child{
+          background-color: #E9ECF2;
+        }
+        &::before{
+          position: absolute;
+          left: 5px;
+          top: 50%;
+          transform: translateY(-50%);
+          content: "";
+          width: 17px;
+          height: 17px;
+          background: url("../../../assets/img/icons.png") no-repeat -144px -1px;
+        }
+      }
+    }
+  }
+}
+
 </style>
 

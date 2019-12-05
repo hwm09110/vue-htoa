@@ -1,7 +1,9 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      <h2 class="title">请假申请</h2>
+      <div class="page-title">
+        <h2 class="title">请假申请</h2>
+      </div>
       <div class="top-btn">
         <Button type="primary" class="btn">
           <Icon type="ios-download-outline" size="22" style="vertical-align:middle;"/>
@@ -131,21 +133,5 @@ export default {
 
 
 <style lang="scss" scoped>
-.page-title{
-  padding-bottom: 15px;
-  margin-bottom: 20px;
-  border-bottom: solid 1px #ccc;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .title{
-    font-size: 18px;
-  }
-  .top-btn{
-    .btn{
-      margin-left: 10px;
-    }
-  }
-}
 </style>
 

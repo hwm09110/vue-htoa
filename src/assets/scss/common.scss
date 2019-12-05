@@ -2,10 +2,21 @@
 
 // 页面title
 .page-title{
-  font-size: 18px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #dcdcdc;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
+  border-bottom: solid 1px #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .title{
+    color: #666;
+    font-size: 16px;
+  }
+  .top-btn{
+    .btn{
+      margin-left: 10px;
+    }
+  }
 }
 
 // 搜索
