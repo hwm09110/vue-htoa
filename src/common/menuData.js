@@ -161,7 +161,6 @@ export const topNavList = [
       },
     ],
   },
-<<<<<<< HEAD
   {
     text:'单位组织',
     name:'unitTeam',
@@ -222,6 +221,3 @@ export const topNavList = [
     ],
   },  
 ]
-=======
-];
->>>>>>> ba4663fdf6b8f73a83cdd56fda48f856d899df93
