@@ -1,6 +1,8 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">通知中心</h1>
+    <div class="page-title">
+      <h2 class="title">通知中心</h2>
+    </div>
     <div class="search-wrap" style="display:none;">
       <div class="item-box">
         <span class="label">工作流 </span>

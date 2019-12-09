@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      <h2 class="title">请假审批</h2>
+      <h2 class="title">出差审批</h2>
     </div>
     <div class="tab-wrap">
       <Tabs value="name1" :animated="false">
@@ -37,16 +37,16 @@ export default {
           key: 'department'
         },
         {
-          title: '申请时间',
+          title: '出差时间',
           key: 'time'
         },
         {
-          title: '请假类别',
-          key: 'category'
+          title: '出差地点',
+          key: 'address'
         },
         {
-          title: '请假天数',
-          key: 'daycount'
+          title: '申请时间',
+          key: 'applytime'
         },
         {
           title: '审批结果',
@@ -55,26 +55,11 @@ export default {
       ],
       tableData: [
         {
-          category: "事件",
+          address: "事件",
           department: "技术部",
           daycount: "2天0小时",
           time: "2019-12-03 15:20",
-          applyer: "李白",
-          status: "待审批",
-        },
-        {
-          category: "事件",
-          department: "技术部",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          applyer: "李白",
-          status: "待审批",
-        },
-        {
-          category: "事件",
-          department: "技术部",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
+          applytime: "2019-12-01 12:20",
           applyer: "李白",
           status: "待审批",
         },

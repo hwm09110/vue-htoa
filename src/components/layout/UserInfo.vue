@@ -3,7 +3,7 @@
     <div class="portrait"><img :src="portraitSrc" alt="portrait"></div>
     <div class="user-name">
       <h2>黄伟明</h2>
-      <div class="entry">[个人中心]</div>
+      <router-link tag="div" :to="{name:'my_info'}" class="entry">[个人中心]</router-link>
     </div>
     <span class="logout" @click="handleLogout">退出</span>
   </div>

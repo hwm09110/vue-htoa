@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      <h2 class="title">请假申请</h2>
+      <h2 class="title">提建议</h2>
     </div>
     
     <div class="applyer-info">
@@ -18,7 +18,7 @@
         <span class="item-val">WEB前端开发工程师</span>
       </div>
       <div class="info-item">
-        <span class="item-label">单号： </span>
+        <span class="item-label">问题编号： </span>
         <span class="item-val">20191204141056</span>
       </div>
     </div>
@@ -27,49 +27,28 @@
       <div class="form-box">
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>请假类别：</span>
+            <span class="label"><i class="require"></i>反馈对象：</span>
             <Select class="form-select">
                 <Option v-for="item in cateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-            <span class="tips">一次性申请事假不超过10天</span>
-          </div>
-        </div>
-        <div class="form-row">
-          <Checkbox v-model="isAgree" style="margin-left:76px;">本人同意授权人力资源部，优先采用事假时长与加班时长相抵扣的原则计算相关薪酬</Checkbox>
-        </div>
-        <div class="form-row">
-          <div class="form-item">
-            <span class="label"><i class="require"></i>离开日期：</span>
-            <DatePicker type="datetime" placeholder="开始时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker>
-          </div>
-          <div class="form-item" style="margin-left:50px;">
-            <span class="label"><i class="require"></i>报到日期：</span>
-            <DatePicker type="datetime" placeholder="结束时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker>
-          </div>
-          <span class="calcTime-tips">*您的请假时间，将从请假之日起开始计算（包含节假日）。如分次休假，请分次提交。</span>
-        </div>
-        <div class="form-row">
-          <div class="form-item">
-            <span class="label"><i class="require"></i>请假天数：</span>
-            <Input readonly style="width:100px;"/> 天
-            <Input readonly style="width:100px;"/> 时
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>工作代理人：</span>
-            <Input class="form-input" />
+            <span class="label"><i class="require"></i>问题：</span>
+            <Input style="width:800px;" type="textarea" :rows="8" placeholder="填写问题" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="label"><i class="require"></i>请假原因：</span>
-            <Input style="width:800px;" type="textarea" :rows="5" placeholder="填写请假原因" />
+            <span class="label"><i class="require"></i>建议方案：</span>
+            <Input style="width:800px;" type="textarea" :rows="8" placeholder="填写建议方案" />
           </div>
         </div>
       </div>
       <div class="form-operate">
         <Button type="primary" class="submit-btn">提交</Button>
+        <Button style="margin-left:30px;">取消</Button>
       </div>
     </div>
 
@@ -78,7 +57,7 @@
 
 <script>
 export default {
-  name:'Apply',
+  name:'Suggest',
   data () {
     return {
       cateList: [],

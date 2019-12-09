@@ -1,6 +1,8 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">通讯录</h1>
+    <div class="page-title">
+      <h2 class="title">通讯录</h2>
+    </div>
     <div class="search-wrap">
       <div class="item-box">
         <Input placeholder="输入人员姓名" class="search-input" />
@@ -41,11 +43,29 @@ export default {
                 expand: true,
               },
               {
-                title: '技术',
+                title: '技术支持',
                 expand: true,
                 children: [
                   {
-                      title: '开放部'
+                      title: '开放部',
+                      expand: false,
+                      children: [
+                        {
+                          title: "后端开放"
+                        },
+                        {
+                          title: "前端开放"
+                        },
+                        {
+                          title: "移动端开放"
+                        },
+                        {
+                          title: "UI设计"
+                        },
+                        {
+                          title: "测试"
+                        },
+                      ]
                   },
                   {
                       title: '研发部'

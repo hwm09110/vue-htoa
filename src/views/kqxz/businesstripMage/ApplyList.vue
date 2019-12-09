@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      <h2 class="title">我的申请记录</h2>
+      <h2 class="title">我的出差记录</h2>
     </div>
     <div class="tab-wrap">
       <Tabs value="name1" :animated="false">
@@ -29,16 +29,16 @@ export default {
       cateList: [],
       tableColumns: [
         {
-          title: '请假类别',
-          key: 'category'
-        },
-        {
-          title: '请假天数',
-          key: 'daycount'
-        },
-        {
-          title: '申请时间',
+          title: '出差时间',
           key: 'time'
+        },
+        {
+          title: '出差地点',
+          key: 'address'
+        },
+        {
+          title: '出差报告',
+          key: 'isReport'
         },
         {
           title: '下一步操作人',
@@ -51,38 +51,17 @@ export default {
       ],
       tableData: [
         {
-          category: "事件",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
+          time: "2019-11-15 10:30",
+          address: "北京",
+          isReport: "不需要提交",
           next: "李白",
           status: "待审批",
         },
         {
-          category: "事件",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          next: "李白",
-          status: "待审批",
-        },
-        {
-          category: "事件",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          next: "李白",
-          status: "待审批",
-        },
-        {
-          category: "事件",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          next: "李白",
-          status: "待审批",
-        },
-        {
-          category: "事件",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          next: "李白",
+          time: "2019-11-15 10:30",
+          address: "北京",
+          isReport: "待提交/修改",
+          next: "李白2",
           status: "待审批",
         },
       ],

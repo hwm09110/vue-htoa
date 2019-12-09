@@ -1,9 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      <div class="page-title">
-        <h2 class="title">请假申请</h2>
-      </div>
+      <h2 class="title">公司出差记录</h2>
       <div class="top-btn">
         <Button type="primary" class="btn">
           <Icon type="ios-download-outline" size="22" style="vertical-align:middle;"/>
@@ -27,10 +25,8 @@
         </Select>
       </div>
       <div class="item-box">
-        <span class="label">请假类别 </span>
-        <Select class="search-select">
-            <Option v-for="item in cateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-        </Select>
+        <span class="label">出差地点 </span>
+        <Input placeholder="输入地点关键字" class="search-input" />
       </div>
       <br/>
       <div class="item-box">
@@ -41,15 +37,6 @@
       <div class="item-box">
         <Button type="primary">查询</Button>
       </div>
-    </div>
-    <div class="tab-wrap">
-      <Tabs value="name1" :animated="false">
-        <TabPane label="处理中" name="name1"></TabPane>
-        <TabPane label="已完成" name="name2"></TabPane>
-        <TabPane label="全部" name="name3"></TabPane>
-        <TabPane label="已退回" name="name4"></TabPane>
-        <TabPane label="已撤回" name="name5"></TabPane>
-    </Tabs>
     </div>
     <div class="table-wrap">
       <Table :columns="tableColumns" :data="tableData"></Table>
@@ -69,61 +56,47 @@ export default {
       cateList: [],
       tableColumns: [
         {
-          title: '请假类别',
-          key: 'category'
+          title: '申请人',
+          key: 'applyer'
         },
         {
-          title: '请假天数',
-          key: 'daycount'
+          title: '部门',
+          key: 'department'
         },
         {
-          title: '申请时间',
-          key: 'time'
+          title: '出差开始时间',
+          key: 'btime'
         },
         {
-          title: '下一步操作人',
-          key: 'next'
+          title: '出差结束时间',
+          key: 'etime'
         },
         {
-          title: '审批结果',
-          key: 'status'
+          title: '出差地点',
+          key: 'address'
         },
       ],
       tableData: [
         {
-          category: "事假",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          next: "李白",
-          status: "待审批",
+          address: "北京",
+          department: "技术部",
+          btime: "2019-12-03 15:20",
+          etime: "2019-12-11 12:20",
+          applyer: "李白",
         },
         {
-          category: "事假",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          next: "李白",
-          status: "待审批",
+          address: "北京",
+          department: "技术部",
+          btime: "2019-12-03 15:20",
+          etime: "2019-12-11 12:20",
+          applyer: "李白",
         },
         {
-          category: "事假",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          next: "李白",
-          status: "待审批",
-        },
-        {
-          category: "事假",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          next: "李白",
-          status: "待审批",
-        },
-        {
-          category: "事假",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          next: "李白",
-          status: "待审批",
+          address: "北京",
+          department: "技术部",
+          btime: "2019-12-03 15:20",
+          etime: "2019-12-11 12:20",
+          applyer: "李白",
         },
       ],
     }
