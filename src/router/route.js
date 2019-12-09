@@ -4,6 +4,7 @@ import Index from '../views/Index'
 import Error from '../views/Error'
 import my from './my' //我的待办、我的申请...
 import kqxz from './kqxz' //考勤行政
+import unitTeam from './unitTeam' //单位组织
 import purchase from './purchase'
 
 const Home = () => import(/* webpackChunkName: "home" */ '../views/home/Home.vue')
@@ -30,6 +31,7 @@ export default new Router({
         ...my,
         ...kqxz,
         ...purchase,
+        ...unitTeam
       ]
     },
     {
