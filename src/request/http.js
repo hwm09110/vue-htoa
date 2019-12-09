@@ -38,8 +38,8 @@ http.interceptors.response.use(res => {
   // console.log('http interceptors', res)
   if(res.data){
     if(res.data.code == '9001'){
-      localStorage.removeItem('isLogin')
-      localStorage.removeItem('info')
+      localStorage.removeItem("isLogin")
+      localStorage.removeItem("userInfo")
       router.push({name: 'login'}) //重新登录
       Vue.prototype.$Message.error(res.data.message)
     }

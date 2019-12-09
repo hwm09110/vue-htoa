@@ -2,3 +2,7 @@
 .ivu-table-header thead tr th {
   padding: 15px 0;
 }
+
+.ivu-tree-title{
+  padding: 4px 6px;
+}

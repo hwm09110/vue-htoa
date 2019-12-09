@@ -2,10 +2,37 @@ import http from '../http';
 import Qs from 'qs';
 
 //登录
-const checkLogin = (params) => http.post('/htoa/qx/denglu', Qs.stringify(params)).then(res=>{ return res.data});
+const checkLogin = (params) => http.post('/hthr/qx/denglu', Qs.stringify(params)).then(res => res.data);
 
+//登出
+const doLogout = (params) => http.get('/hthr/qx/login_out', {params}).then(res => res.data);
+
+//个人基本信息
+const getPersonInfo = (params) => http.get('/hthr/accountinfo/personinfo', {params}).then(res => res.data);
+
+//个人基本信息-修改手机号码
+const editUserInfo = (params) => http.post('/hthr/accountinfo/edituser', Qs.stringify(params)).then(res => res.data);
+
+//个人基本信息-修改头像
+const editUserPortrait = (params) => http.post('/hthr/accountinfo/editHeadimg', Qs.stringify(params)).then(res => res.data);
+
+//顶部菜单信息
+const getTopMenuList = (params) => http.get('/hthr/qx/getmenu', {params}).then(res => res.data);
+
+// 图片统一上传
+const uploadFile = (params) => http.post('/htfile/process/upload', Qs.stringify(params)).then(res => res.data);
+
+// 图片统一上传
+const uploadFileByForm = (params) => http.post('/htfile/process/formupload', params, {headers:{'Content-Type':'multipart/form-data'}}).then(res => res.data);
 
 
 export default {
-    checkLogin
+    checkLogin,
+    doLogout,
+    getPersonInfo,
+    editUserInfo,
+    editUserPortrait,
+    getTopMenuList,
+    uploadFile,
+    uploadFileByForm,
 }

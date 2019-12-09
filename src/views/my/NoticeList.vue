@@ -24,23 +24,17 @@
         <Button type="primary">查询</Button>
       </div>
     </div>
-    <div class="tab-wrap" style="display:none;">
-      <Tabs value="name1" :animated="false">
-        <TabPane label="待审批(1)" name="name1"></TabPane>
-        <TabPane label="已审批(11)" name="name2"></TabPane>
-        <TabPane label="全部(12)" name="name3"></TabPane>
-    </Tabs>
-    </div>
     <div class="table-wrap">
       <Table :columns="tableColumns" :data="tableData"></Table>
     </div>
     <div class="page-wrap">
-      <Page :total="100" show-total show-elevator />
+      <Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: "NoticeList",
   data() {
@@ -49,34 +43,86 @@ export default {
       tableColumns: [
         {
           title: '通知标题',
-          key: 'title'
+          key: 'sn_title'
         },
         {
           title: '通知内容',
-          key: 'content'
+          key: 'sn_content'
         },
         {
           title: '时间',
-          key: 'time'
+          key: 'insert_time'
         },
       ],
-      tableData: [
-        {
-          title: "test",
-          content: "test content",
-          time: "2019-12-03 15:20",
-        },
-        {
-          title: "test",
-          content: "test content",
-          time: "2019-12-03 15:20",
-        },
-        {
-          title: "test",
-          content: "test content",
-          time: "2019-12-03 15:20",
-        },
-      ],
+      tableData: [],
+      listCount: 0,
+      listLen: 10,
+      listCurpage: 1,
+
+      listParams: {
+        page: 1
+      }
+    }
+  },
+  computed: {
+    ...mapState(["userInfo"])
+  },
+  methods: {
+
+    //分页
+    handleListPage() {
+      this.init()
+    },
+
+    // 拉取列表数据
+    async getTabeData() {
+      try {
+        this.listParams.page = this.listCurpage
+        this.listParams.user_guid = this.userInfo.user_guid
+        const res = await this.$http.getNoticeList(this.listParams)
+        console.log(res)
+        if(res.code ===  '200'){
+          const { info, count, len } = res.extraData
+          this.listCount = parseInt(count)
+          this.listLen = len
+          this.tableData = info
+        }else{
+          this.$Message.warning(res.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    init() {
+      this.getTabeData()
+    }
+  },
+  created() {
+    this.init()
+  },
+  filters: {
+    setStatusClass(value) {
+      let sClass = ""
+      if(value == 1) {
+        sClass = ""
+      }else if(value == 2) {
+        sClass = "text-blue"
+      }else if(value == 3) {
+        sClass = "text-maroon"
+      }
+      return sClass
+    },
+    convertStatus(value) {
+      let sText = ""
+      if(value == 1) {
+        sText = "进行中"
+      }else if(value == 2) {
+        sText = "已完成"
+      }else if(value == 3) {
+        sText = "已退回"
+      }
+      return sClass
     }
   }
 }

@@ -32,43 +32,43 @@
         <div class="form-row">
           <div class="form-item">
             <span class="label"><i class="require"></i>会议主题：</span>
-            <Input class="form-input" style="width:600px;"/>
+            <Input class="form-input" style="width:600px;" v-model="formData.theme"/>
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
             <span class="label"><i class="require"></i>参会人数：</span>
-            <Input class="form-input" type="number" />
+            <Input class="form-input" type="number" v-model="formData.num" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
             <span class="label"><i class="require"></i>选择会议室：</span>
-            <Select class="form-select">
-                <Option v-for="item in cateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Select class="form-select" v-model="formData.room_guid">
+                <Option v-for="item in meetingRoomList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
             <span class="label"><i class="require"></i>会议时间：</span>
-            <DatePicker type="datetime" placeholder="开始时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker>
-            <DatePicker type="datetime" placeholder="结束时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker>
+            <DatePicker v-model="formData.stime" @on-ok="handlePickDatetime" type="datetime" placeholder="开始时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker>
+            <DatePicker v-model="formData.etime" @on-ok="handlePickDatetime" type="datetime" placeholder="结束时间" format="yyyy-MM-dd HH:mm" class="form-time"></DatePicker>
           </div>
-          <span class="calcTime-tips">*该时间段此会议室已被预约，请选择其他时间。</span>
+          <span class="calcTime-tips" v-show="hasBook">*该时间段此会议室已被预约，请选择其他时间。</span>
         </div>
         <div class="form-row">
           <div class="form-item">
             <span class="label"><i class="require"></i>是否需要投影设备：</span>
-            <RadioGroup class="form-radio">
-                <Radio label="是"></Radio>
-                <Radio label="否"></Radio>
+            <RadioGroup class="form-radio" v-model="formData.device">
+                <Radio label="1">是</Radio>
+                <Radio label="2">否</Radio>
             </RadioGroup>
           </div>
         </div>
       </div>
       <div class="form-operate">
-        <Button type="primary" class="submit-btn">提交</Button>
+        <Button type="primary" class="submit-btn" @click="handleSubmit">提交</Button>
       </div>
     </div>
 
@@ -122,7 +122,18 @@ export default {
   name:'Apply',
   data () {
     return {
-      cateList: [],
+      meetingRoomList: [],
+      formData: {
+        theme: "",
+        num: "",
+        room_guid: "",
+        room_name: "",
+        stime: "",
+        etime: "",
+        device: "",
+      },
+      hasBook: false, //该时间段此会议室是否已被预约
+
       tableColumns: [
         {
           title: '会议室',
@@ -164,6 +175,79 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+
+    //选择开始时间、结束时间
+    handlePickDatetime() {
+      this.checkPickDateTime()
+    },
+
+    // 检查预约时间是否正确
+    checkPickDateTime() {
+      let stimeStamps = 0
+      let etimeStamps = 0
+
+      if(this.formData.stime) {
+        stimeStamps = Math.floor(new Date(this.formData.stime).getTime() / 1000)
+      }
+      if(this.formData.etime) {
+        etimeStamps = Math.floor(new Date(this.formData.etime).getTime() / 1000)
+      }
+      console.log(stimeStamps, etimeStamps)
+      if(stimeStamps > 0 && etimeStamps > 0) {
+        if(etimeStamps <= stimeStamps) {
+          this.$Message.warning("结束时间不能小于开始时间")
+          return false
+        }
+      }
+      return true
+    },
+
+    // 检查表单数据
+    checkFormData() {
+      let result = { code: 200, message: ""}
+
+      if(!this.formData.theme.trim()) {
+        result.code = 2001
+        result.message = "会议主题不能为空"
+        return result  
+      }
+      if(!this.formData.num.trim()) {
+        result.code = 2001
+        result.message = "参会人数不能为空"
+        return result  
+      }
+      if(!this.formData.room_guid.trim()) {
+        result.code = 2001
+        result.message = "请先选择会议室"
+        return result  
+      }
+      if(!this.formData.stime.trim()) {
+        result.code = 2001
+        result.message = "会议开始时间不能为空"
+        return result  
+      }
+      if(!this.formData.etime.trim()) {
+        result.code = 2001
+        result.message = "会议结束时间不能为空"
+        return result  
+      }
+      return result
+    },
+
+    // 提交申请
+    handleSubmit() {
+      console.log(this.formData)
+      const result = this.checkFormData()
+      if(result.code != '200') {
+        this.$Message.warning(result.message)
+        return false
+      }
+      
+    },
+
+
   }
 }
 </script>

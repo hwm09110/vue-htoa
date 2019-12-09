@@ -4,6 +4,9 @@ export default {
   [types.SET_ISLOGIN](state, status){
     state.isLogin = status
   },
+  [types.SET_USERINFO](state, userInfo){
+    state.userInfo = userInfo
+  },
   [types.SET_TOPNAVLIST](state, topNavList){
     state.topNavList = topNavList
   },
