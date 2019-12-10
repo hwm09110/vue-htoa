@@ -204,30 +204,102 @@ export const topNavList = [
   },
   {
     text: '平台管理',
-    name: 'platformMage',
+    name: 'platform',
     level_id: 6,
     subNav: [
       {
-        text: '公司设置',
-        name: 'companysite',
+        text: '流程管理',
+        name: 'processMage',
         level_id: '6_1',
         subNav: [
           {
-            text: '职位职级体系',
-            name: 'ranksystem',
+            text: '流程类型',
+            name: 'processMage_type',
             level_id: '6_1_1',
+          },
+          {
+            text: '流程设置',
+            name: 'processMage_setting',
+            level_id: '6_1_2',
+          },
+          {
+            text: '表单类型',
+            name: 'processMage_formType',
+            level_id: '6_1_3',
+          },
+          {
+            text: '表单设置',
+            name: 'processMage_formSetting',
+            level_id: '6_1_4',
+          },
+          {
+            text: '流程权限转移',
+            name: 'processMage_transform',
+            level_id: '6_1_5',
+          },
+        ],
+      },
+      {
+        text: '系统设置',
+        name: 'systemMage',
+        level_id: '6_2',
+        subNav: [
+          {
+            text: '角色管理',
+            name: 'systemMage_role',
+            level_id: '6_2_1',
+          },
+          {
+            text: '模块管理',
+            name: 'systemMage_module',
+            level_id: '6_2_2',
+          },
+          {
+            text: '菜单管理',
+            name: 'systemMage_menu',
+            level_id: '6_2_3',
+          },
+          {
+            text: '系统管理员',
+            name: 'systemMage_admin',
+            level_id: '6_2_4',
+          },
+        ],
+      },
+      {
+        text: '公司设置',
+        name: 'company',
+        level_id: '6_3',
+        subNav: [
+          {
+            text: '职位职级体系',
+            name: 'company_rank',
+            level_id: '6_3_1',
+          },
+          {
+            text: '城市级别体系',
+            name: 'company_city',
+            level_id: '6_3_2',
+          },
+          {
+            text: '人员类别管理',
+            name: 'company_employee',
+            level_id: '6_3_3',
+          },
+          {
+            text: '会议室设置',
+            name: 'company_meetingroom',
+            level_id: '6_3_4',
+          },
+          {
+            text: '节假日设置',
+            name: 'company_holiday',
+            level_id: '6_3_5',
           },
         ],
       },
     ],
-<<<<<<< HEAD
   },
 ];
-=======
-  },  
-]
 
-export function filterMenu() {
-
-}
->>>>>>> 67a63e936b85cded0b2e15d49fcb0b7a119e9e3d
+export function filterMenu() {}
