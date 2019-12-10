@@ -2,9 +2,11 @@
  * 单一状态树
  * vuex 操作顺序：state.js -> mutations-type.js -> mutations.js -> getters.js
  */
+const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {}
 
 const state = {
-  isLogin: localStorage.getItem('isLogin') || 0, //登录状态
+  isLogin: localStorage.getItem('isLogin') || null, //登录状态
+  userInfo, //登录用户信息
 
   topNavList: [], //顶部导航菜单
   topNavActive: "", //顶部 active 项

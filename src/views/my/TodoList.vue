@@ -5,41 +5,29 @@
     </div>
     <div class="search-wrap">
       <div class="item-box">
-        <span class="label">工作流 </span>
-        <Select class="search-select">
-            <Option v-for="item in cateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-        </Select>
+        <span class="label">关键字 </span>
+        <Input placeholder="输入标题关键字" class="search-input" clearable v-model="listParams.keyword" />
       </div>
       <div class="item-box">
-        <span class="label">创建时间 </span>
-        <DatePicker type="date" placeholder="开始时间" class="search-time"></DatePicker> 至 
-        <DatePicker type="date" placeholder="结束时间" class="search-time"></DatePicker>
-      </div>
-      <br/>
-      <div class="item-box">
-        <span class="label">创建人 </span>
-        <Input placeholder="输入创建人姓名" class="search-input" />
-      </div>
-      <div class="item-box">
-        <span class="label">审核内容 </span>
-        <Input placeholder="输入审核内容" class="search-input" />
-      </div>
-      <div class="item-box">
-        <Button type="primary">查询</Button>
+        <Button type="primary" @click="handleSearch">查询</Button>
       </div>
     </div>
     <div class="tab-wrap">
-      <Tabs value="name1" :animated="false">
-        <TabPane label="待处理(1)" name="name1"></TabPane>
-        <TabPane label="已处理(11)" name="name2"></TabPane>
-        <TabPane label="全部(12)" name="name3"></TabPane>
+      <Tabs :value="listParams.type" :animated="false" @on-click="handleSwitchTab">
+        <TabPane label="待处理" name="3"></TabPane>
+        <TabPane label="已处理" name="4"></TabPane>
+        <TabPane label="全部" name="0"></TabPane>
     </Tabs>
     </div>
     <div class="table-wrap">
-      <Table :columns="tableColumns" :data="tableData"></Table>
+      <Table :columns="tableColumns" :data="tableData">
+        <template slot="process_status" slot-scope="{ row, index }">
+          <span :class="row.process_status|setStatusClass">{{row.process_status|convertStatus}}</span>
+        </template>
+      </Table>
     </div>
     <div class="page-wrap">
-      <Page :total="100" show-total show-elevator />
+      <Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />
     </div>
   </div>
 </template>
@@ -49,75 +37,117 @@ export default {
   name: "TodoList",
   data() {
     return {
-      cateList: [],
+      statusList: [
+        {name: "全部", value: 0},
+        {name: "已完成", value: 1},
+        {name: "已退回", value: 2},
+        {name: "进行中", value: 3},
+      ],
       tableColumns: [
         {
           title: '工作流',
-          key: 'category'
-        },
-        {
-          title: '内容',
-          key: 'content'
+          key: 'apply_name'
         },
         {
           title: '当前节点',
-          key: 'nowNode'
+          key: 'now_step_name'
         },
         {
           title: '创建部门',
-          key: 'department'
+          key: 'dept_name'
         },
         {
           title: '创建人',
-          key: 'creater'
+          key: 'insert_operator_name'
         },
         {
           title: '创建时间',
-          key: 'time'
+          key: 'apply_time'
         },
         {
-          title: '状态',
-          key: 'status'
+          title: '流程状态',
+          key: 'process_status',
+          slot: 'process_status',
         },
       ],
-      tableData: [
-        {
-          category: "test",
-          content: "test content",
-          nowNode: "部门经理",
-          department: "技术部",
-          creater: "张三",
-          time: "2019-12-03 15:20",
-          status: "正常",
-        },
-        {
-          category: "test",
-          content: "test content",
-          nowNode: "部门经理",
-          department: "技术部",
-          creater: "张三",
-          time: "2019-12-03 15:20",
-          status: "正常",
-        },
-        {
-          category: "test",
-          content: "test content",
-          nowNode: "部门经理",
-          department: "技术部",
-          creater: "张三",
-          time: "2019-12-03 15:20",
-          status: "正常",
-        },
-        {
-          category: "test",
-          content: "test content",
-          nowNode: "部门经理",
-          department: "技术部",
-          creater: "张三",
-          time: "2019-12-03 15:20",
-          status: "正常",
+      tableData: [],
+
+      listCount: 0,
+      listLen: 10,
+      listCurpage: 1,
+      listParams: {
+        type: "0",
+        keyword: "",
+        page: 1,
+      },
+    }
+  },
+  methods: {
+    // 搜索
+    handleSearch() {
+      this.init()
+    },
+
+    //切换tab
+    handleSwitchTab(name) {
+      this.listParams.type = name
+      this.init()
+    },
+
+    //分页
+    handleListPage() {
+      this.init()
+    },
+
+    // 拉取列表数据
+    async getTabeData() {
+      try {
+        this.listParams.page = this.listCurpage
+        const res = await this.$http.getTodoList(this.listParams)
+        console.log(res)
+        if(res.code ===  '200'){
+          const { info, count, len } = res.extraData
+          this.listCount = parseInt(count)
+          this.listLen = len
+          this.tableData = info
+        }else{
+          this.$Message.warning(res.message)
         }
-      ],
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    init() {
+      this.getTabeData()
+    }
+  },
+  created() {
+    this.init()
+  },
+  filters: {
+    setStatusClass(value) {
+      console.log(value)
+      let sClass = ""
+      if(value == 1) {
+        sClass = ""
+      }else if(value == 2) {
+        sClass = "text-blue"
+      }else if(value == 3) {
+        sClass = "text-maroon"
+      }
+      return sClass
+    },
+    convertStatus(value) {
+      let sText = ""
+      if(value == 1) {
+        sText = "进行中"
+      }else if(value == 2) {
+        sText = "已完成"
+      }else if(value == 3) {
+        sText = "已退回"
+      }
+      return sText
     }
   }
 }

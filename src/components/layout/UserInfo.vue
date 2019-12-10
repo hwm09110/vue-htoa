@@ -1,8 +1,11 @@
 <template>
   <div id="user-info-wrap">
-    <div class="portrait"><img :src="portraitSrc" alt="portrait"></div>
+    <div class="portrait">
+      <img :src="userInfo.portrait" alt="portrait" v-if="userInfo.portrait != '' ">
+      <img :src="userInfo.gender == 1?manPortraitSrc:womanPortraitSrc" alt="portrait" v-else>
+    </div>
     <div class="user-name">
-      <h2>黄伟明</h2>
+      <h2>{{userInfo.user_name}}</h2>
       <router-link tag="div" :to="{name:'my_info'}" class="entry">[个人中心]</router-link>
     </div>
     <span class="logout" @click="handleLogout">退出</span>
@@ -10,28 +13,25 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
-
+import { mapState } from "vuex"
 export default {
   name: 'UserInfo',
   data (){
     return {
       // portraitSrc: 'http://192.168.8.172:16620/img/htoa/man.png'
-      portraitSrc: require('../../assets/img/man.png')
+        manPortraitSrc: require('../../assets/img/man.png'),
+        womanPortraitSrc: require('../../assets/img/woman.png'),
       }
+  },
+  computed: {
+    ...mapState(['userInfo'])
   },
   methods: {
     //退出登录
     handleLogout () {
-      Cookies.remove('isLogin');
-      this.$store.dispatch('setLoginStatus',false);
-      this.$router.push('/login');
+      this.$store.dispatch('doLogout')
     }
   },
-  created (){
-  },
-  mounted (){
-  }
 }
 </script>
 
