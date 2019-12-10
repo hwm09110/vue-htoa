@@ -1,53 +1,108 @@
 <template>
-  <div class="apply-container">
+  <div class="apply-container checkApply">
     <div class="page-title">
       <h2 class="title">加班审批</h2>
     </div>
-    <div class="applyer-info">
-      <div class="info-item">
-        <span class="item-label">姓名：</span>
-        <span class="item-val">黄伟明</span>
-      </div>
-      <div class="info-item">
-        <span class="item-label">部门：</span>
-        <span class="item-val">技术部</span>
-      </div>
-      <div class="info-item">
-        <span class="item-label">职务：</span>
-        <span class="item-val">WEB前端开发工程师</span>
-      </div>
-      <div class="info-item">
-        <span class="item-label">申请地区：</span>
-        <span class="item-val">广州</span>
-      </div>
-      <div class="info-item">
-        <span class="item-label">申请时间：</span>
-        <span class="item-val">2018-11-23</span>
-      </div>
-    </div>
-    <div class="statistics-info">
-      <div class="info-item">
-        <span class="item-label">商品总数：</span>
-        <span class="item-val">0</span>
-      </div>
-      <div class="info-item">
-        <span class="item-label">商品总金额：</span>
-        <span class="item-val">0</span>
-      </div>
-    </div>
+    <Tabs value="all" :animated="false">
+      <TabPane label="待审核" name="checkPending"></TabPane>
+      <TabPane label="已审核" name="audited"></TabPane>
+      <TabPane label="已完成" name="completed"></TabPane>
+      <TabPane label="全部" name="all"></TabPane>
+      <TabPane label="已退回" name="hasBeenReturned"></TabPane>
+    </Tabs>
+    <Table height="calc(100% - 220px)" :columns="table.columns" :data="table.all"></Table>
+    <Page :total="100" show-total show-elevator />
   </div>
 </template>
 
 <script>
 export default {
-  name: "Apply",
   data() {
-    return {};
+    return {
+      table: {
+        columns: [
+          {
+            title: "申请人",
+            key: "name"
+          },
+          {
+            title: "部门",
+            key: "department"
+          },
+          {
+            title: "申请时间",
+            key: "time"
+          },
+          {
+            title: "加班时长",
+            key: "overtimeHours"
+          },
+          {
+            title: "加班费",
+            key: "overtimePay"
+          },
+          {
+            title: "操作/结果",
+            key: "operation"
+          }
+        ],
+        // 所有
+        all: [
+          {
+            name: "Ggg",
+            department: "测试部门",
+            time: "2016-10-03 12:32",
+            overtimeHours: "2小时",
+            overtimePay: "--",
+            operation: "待审批"
+          },
+          {
+            name: "Ggg",
+            department: "测试部门",
+            time: "2016-10-03 12:32",
+            overtimeHours: "2小时",
+            overtimePay: "--",
+            operation: "待审批"
+          },
+          {
+            name: "Ggg",
+            department: "测试部门",
+            time: "2016-10-03 12:32",
+            overtimeHours: "2小时",
+            overtimePay: "--",
+            operation: "待审批"
+          },
+          {
+            name: "Ggg",
+            department: "测试部门",
+            time: "2016-10-03 12:32",
+            overtimeHours: "2小时",
+            overtimePay: "--",
+            operation: "待审批"
+          },
+          {
+            name: "Ggg",
+            department: "测试部门",
+            time: "2016-10-03 12:32",
+            overtimeHours: "2小时",
+            overtimePay: "--",
+            operation: "待审批"
+          }
+        ]
+      }
+    };
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.checkApply {
+  /deep/ .ivu-page {
+    display: flex;
+    justify-content: flex-end;
+    margin: 15px 0;
+  }
+}
 .apply-container {
   .page-title {
     padding-bottom: 15px;

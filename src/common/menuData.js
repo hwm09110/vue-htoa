@@ -162,62 +162,63 @@ export const topNavList = [
     ],
   },
   {
-    text:'单位组织',
-    name:'unitTeam',
+    text: '单位组织',
+    name: 'unitTeam',
     level_id: 5,
     subNav: [
       {
-        text: "部门管理",
-        name: "departmentMage",
+        text: '部门管理',
+        name: 'departmentMage',
         level_id: '5_1',
         subNav: [
           {
-            text: "一级部门",
-            name: "departmentMage_first",
-            level_id: '5_1_1'
+            text: '一级部门',
+            name: 'departmentMage_first',
+            level_id: '5_1_1',
           },
           {
-            text: "二级部门",
-            name: "departmentMage_second",
-            level_id: '5_1_2'
+            text: '二级部门',
+            name: 'departmentMage_second',
+            level_id: '5_1_2',
           },
           {
-            text: "三级部门",
-            name: "departmentMage_third",
-            level_id: '5_1_3'
+            text: '三级部门',
+            name: 'departmentMage_third',
+            level_id: '5_1_3',
           },
         ],
       },
       {
-        text: "员工管理",
-        name: "employeeMage",
+        text: '员工管理',
+        name: 'employeeMage',
         level_id: '5_2',
-        subNav:[{
-          text: "在职员工",
-          name: "employeeMage_onjob",
-          level_id: '5_2_1'
-        }]
-      }
+        subNav: [
+          {
+            text: '在职员工',
+            name: 'employeeMage_onjob',
+            level_id: '5_2_1',
+          },
+        ],
+      },
     ],
-  },  
+  },
   {
-    text:'平台管理',
-    name:'platformMage',
+    text: '平台管理',
+    name: 'platformMage',
     level_id: 6,
     subNav: [
       {
-        text: "公司设置",
-        name: "companysite",
+        text: '公司设置',
+        name: 'companysite',
         level_id: '6_1',
         subNav: [
           {
-            text: "职位职级体系",
-            name: "ranksystem",
-            level_id: '6_1_1'
-          }
+            text: '职位职级体系',
+            name: 'ranksystem',
+            level_id: '6_1_1',
+          },
         ],
       },
-  
     ],
-  },  
-]
+  },
+];
