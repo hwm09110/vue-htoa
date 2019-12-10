@@ -7,23 +7,23 @@
     <div class="applyer-info">
       <div class="info-item">
         <span class="item-label">姓名：</span>
-        <span class="item-val">黄伟明</span>
+        <span class="item-val">{{userInfo.user_name}}</span>
       </div>
       <div class="info-item">
         <span class="item-label">部门：</span>
-        <span class="item-val">技术部</span>
+        <span class="item-val">{{userInfo.dept_name}}</span>
       </div>
       <div class="info-item">
         <span class="item-label">职务：</span>
-        <span class="item-val">WEB前端开发工程师</span>
+        <span class="item-val">{{userInfo.duty}}</span>
       </div>
       <div class="info-item">
         <span class="item-label">申请地区： </span>
-        <span class="item-val">广州</span>
+        <span class="item-val">{{userInfo.location_name}}</span>
       </div>
       <div class="info-item">
         <span class="item-label">单号：  </span>
-        <span class="item-val">20191204165715</span>
+        <span class="item-val">{{orderNumber}}</span>
       </div>
     </div>
 
@@ -44,8 +44,8 @@
         <div class="form-row">
           <div class="form-item">
             <span class="label"><i class="require"></i>选择会议室：</span>
-            <Select class="form-select" v-model="formData.room_guid">
-                <Option v-for="item in meetingRoomList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Select class="form-select" v-model="formData.room_guid" label-in-value @on-change="handleSelectRoom">
+                <Option v-for="item in meetingRoomList" :value="item.room_guid" :key="item.room_guid">{{ item.room_name }}</Option>
             </Select>
           </div>
         </div>
@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name:'Apply',
   data () {
@@ -130,6 +131,8 @@ export default {
         room_name: "",
         stime: "",
         etime: "",
+        stimeStamps: "",
+        etimeStamps: "",
         device: "",
       },
       hasBook: false, //该时间段此会议室是否已被预约
@@ -174,7 +177,19 @@ export default {
           status: "待审批",
         },
       ],
+
+      orderNumber: (Math.round(Date.now()/1000)), //单号
+      p_info: {
+        p_guid: "",
+        p_name: "",
+        step_guid: "",
+      },
+      bookedInfo:{}, //会议室预约情况
+
     }
+  },
+  computed: {
+    ...mapState(["userInfo"])
   },
   methods: {
 
@@ -201,7 +216,16 @@ export default {
           return false
         }
       }
+
+      this.formData.stimeStamps = stimeStamps
+      this.formData.etimeStamps = etimeStamps
       return true
+    },
+
+    //选择会议室
+    handleSelectRoom(result) {
+      this.formData.room_guid = result.value
+      this.formData.room_name = result.label 
     },
 
     // 检查表单数据
@@ -213,24 +237,29 @@ export default {
         result.message = "会议主题不能为空"
         return result  
       }
-      if(!this.formData.num.trim()) {
+      if(!this.formData.num) {
         result.code = 2001
         result.message = "参会人数不能为空"
         return result  
       }
-      if(!this.formData.room_guid.trim()) {
+      if(!this.formData.room_guid) {
         result.code = 2001
         result.message = "请先选择会议室"
         return result  
       }
-      if(!this.formData.stime.trim()) {
+      if(!this.formData.stimeStamps) {
         result.code = 2001
         result.message = "会议开始时间不能为空"
         return result  
       }
-      if(!this.formData.etime.trim()) {
+      if(!this.formData.etimeStamps) {
         result.code = 2001
         result.message = "会议结束时间不能为空"
+        return result  
+      }
+      if(!this.formData.device) {
+        result.code = 2001
+        result.message = "选择是否需要投影设备"
         return result  
       }
       return result
@@ -244,10 +273,48 @@ export default {
         this.$Message.warning(result.message)
         return false
       }
+      const post_data = {
+        p_guid: this.p_info.p_guid,
+        p_name: this.p_info.p_name,
+        step_guid: this.p_info.step_guid,
+        flow_number: this.orderNumber,
+        theme: this.formData.theme,
+        num: this.formData.num,
+        room_guid: this.formData.room_guid,
+        room_name: this.formData.room_name,
+        stime: this.formData.stimeStamps,
+        etime: this.formData.etimeStamps,
+        device: this.formData.device,
+      }
+
+      this.$http.addBoardRoomApply(post_data).then(res => {
+        if(res.code === '200'){
+          this.$Message.success(res.message)
+          
+        }else{
+          this.$Message.warning(res.message)
+        }
+      })
       
     },
 
-
+    async init() {
+      try {
+        const ret = await this.$http.getBoardRoomApplyConfig()
+        if(ret.code === '200'){
+          const { p_info, room, room_dated } = ret.extraData
+          this.meetingRoomList = room
+          this.p_info = p_info
+          this.bookedInfo = room_dated
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      
+    },
+  },
+  created() {
+    this.init()
   }
 }
 </script>

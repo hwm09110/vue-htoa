@@ -5,7 +5,7 @@ import * as types from './mutations-type'
 import { topNavList } from '@/common/menuData'
 
 // 登出
-const doLogout = ({commit}, status) => {
+const doLogout = ({commit, state}) => {
   http.doLogout().then(res => {
     if(res.code === '200'){
       commit('SET_ISLOGIN', null)
@@ -20,7 +20,8 @@ const doLogout = ({commit}, status) => {
 }
 
 //拉取顶部导航
-const getTopNavList = ({commit}) => {
+const getTopNavList = ({commit, state}) => {
+  if(state.topNavList.length > 0) return
   return http.getTopMenuList().then(res => {
     console.log('拉取顶部导航', res.extraData)
     commit(types.SET_TOPNAVLIST, topNavList)

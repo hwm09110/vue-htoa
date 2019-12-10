@@ -6,42 +6,49 @@
     <div class="search-wrap">
       <div class="item-box">
         <span class="label">会议开始时间 </span>
-        <DatePicker type="date" placeholder="开始时间" class="search-time"></DatePicker> 至 
-        <DatePicker type="date" placeholder="结束时间" class="search-time"></DatePicker>
+        <DatePicker v-model="listParams.stime" type="date" placeholder="开始时间" class="search-time"></DatePicker> 至 
+        <DatePicker v-model="listParams.etime" type="date" placeholder="结束时间" class="search-time"></DatePicker>
       </div>
       <div class="item-box">
-        <Button type="primary">查询</Button>
+        <Button type="primary" @click="handleSearch">查询</Button>
       </div>
     </div>
     <div class="tab-wrap">
-      <Tabs value="name1" :animated="false">
-        <TabPane label="待审核" name="name1"></TabPane>
-        <TabPane label="已审核" name="name2"></TabPane>
-        <TabPane label="已完成" name="name3"></TabPane>
-        <TabPane label="全部" name="name4"></TabPane>
-        <TabPane label="已退回" name="name5"></TabPane>
-        <TabPane label="已取消" name="name6"></TabPane>
+      <Tabs :value="listParams.status" :animated="false" @on-click="handleSwitchTab">
+        <TabPane :label="item.name" :name="item.value" v-for="(item, index) of statusList" :key="index"></TabPane>
     </Tabs>
     </div>
     <div class="table-wrap">
-      <Table :columns="tableColumns" :data="tableData"></Table>
+      <Table :columns="tableColumns" :data="tableData" @on-row-click="handleRowClick">
+        <template slot="process_status" slot-scope="{ row, index }">
+          <span :class="row.process_status|setStatusClass(row)">{{row.process_status|convertStatus(row)}}</span>
+        </template>
+      </Table>
     </div>
     <div class="page-wrap">
-      <Page :total="100" show-total show-elevator />
+      <Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />
     </div>
   </div>
 </template>
 
 <script>
+import { formatTimestamp } from "@/utils/moment"
 export default {
   name: "Check",
   data() {
     return {
-      cateList: [],
+      statusList: [
+        {name: "待审核", value: "0"},
+        {name: "已审核", value: "1"},
+        {name: "已完成", value: "2"},
+        {name: "已退回", value: "3"},
+        {name: "全部", value: "4"},
+        {name: "已取消", value: "5"},
+      ],
       tableColumns: [
         {
           title: '申请人',
-          key: 'applyer'
+          key: 'user_name'
         },
         {
           title: '会议主题',
@@ -49,39 +56,117 @@ export default {
         },
         {
           title: '会议室',
-          key: 'roomName'
+          key: 'room_name'
         },
         {
           title: '会议开始时间',
-          key: 'time'
+          key: 'stime'
+        },
+        {
+          title: '操作/结果',
+          key: 'result'
         },
       ],
-      tableData: [
-        {
-          applyer: "张三",
-          theme: "事件",
-          roomName: "一楼会议室",
-          time: "2019-12-03 15:20",
-        },
-        {
-          applyer: "张三",
-          theme: "事件",
-          roomName: "一楼会议室",
-          time: "2019-12-03 15:20",
-        },
-        {
-          applyer: "张三",
-          theme: "事件",
-          roomName: "一楼会议室",
-          time: "2019-12-03 15:20",
-        },
-        {
-          applyer: "张三",
-          theme: "事件",
-          roomName: "一楼会议室",
-          time: "2019-12-03 15:20",
-        },
-      ],
+      tableData: [],
+
+      listCount: 0,
+      listLen: 10,
+      listCurpage: 1,
+      listParams: {
+        status: "0",
+        stime: "",
+        etime: "",
+        page: 1,
+      },
+    }
+  },
+  methods: {
+    // 搜索
+    handleSearch() {
+      this.init()
+    },
+
+    //切换tab
+    handleSwitchTab(name) {
+      this.listParams.type = name
+      this.init()
+    },
+
+    //分页
+    handleListPage() {
+      this.init()
+    },
+
+    //点击行查看详情
+    handleRowClick(rowItem) {
+      console.log(rowItem)
+      this.$router.push({name: "meetingRoomMage_detail", query: {apply_guid: rowItem.apply_guid, now_step_guid: rowItem.now_step_guid}})
+    },
+
+    //数据处理
+    transformData(sourceData) {
+      let newData = sourceData.map(item => {
+        item.stime = item.stime ? formatTimestamp(item.stime*1000, "YYYY-MM-DD HH:mm") : "-"
+        return item
+      })
+      return newData
+    },
+
+    // 拉取列表数据
+    async getTabeData() {
+      try {
+        this.listParams.page = this.listCurpage
+        this.listParams.stime = this.listParams.stime ? (formatTimestamp(this.listParams.stime, "YYYY-MM-DD")) : ""
+        this.listParams.etime = this.listParams.etime ? (formatTimestamp(this.listParams.etime, "YYYY-MM-DD")) : ""
+        const res = await this.$http.getBoardRoomCheckList(this.listParams)
+        console.log(res)
+        if(res.code ===  '200'){
+          const { info, count, len } = res.extraData
+          this.listCount = parseInt(count)
+          this.listLen = len || 10
+          this.tableData = this.transformData(info)
+        }else{
+          this.$Message.warning(res.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    init() {
+      this.getTabeData()
+    }
+  },
+  created() {
+    this.init()
+  },
+  filters: {
+    setStatusClass(value, rowItem) {
+      console.log(value)
+      let sClass = ""
+      if(rowItem.is_allow == 2) {
+        sClass = "text-maroon"
+      }else if(value == 1) {
+        sClass = ""
+      }else if(value == 3 || value == 4) {
+        sClass = "text-maroon"
+      }else{
+        sClass = "text-blue"
+      }
+      return sClass
+    },
+    convertStatus(value, rowItem) {
+      let sText = ""
+      if(rowItem.is_allow == 2) {
+        sText = "已取消"
+      }else if(value == 1) {
+        sText = "已批准"
+      }else if(value == 3 || value == 4) {
+        sText = "已退回"
+      }else{
+        sText = "待处理"
+      }
+      return sText
     }
   }
 }

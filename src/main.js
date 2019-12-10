@@ -4,7 +4,7 @@ import router from './router/index';
 import store from './store/index';
 import ViewUI from 'view-design';
 import request from './request';
-import Cookies from 'js-cookie';
+import '@/common/filters';
 
 Vue.config.productionTip = false
 Vue.use(ViewUI);

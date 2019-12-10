@@ -193,7 +193,6 @@
 <script>
 import { mapState } from 'vuex'
 import utils from '@/utils'
-import { setTimeout } from 'timers';
 export default {
   name: "Info",
   data() {

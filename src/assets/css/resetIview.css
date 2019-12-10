@@ -6,3 +6,7 @@
 .ivu-tree-title{
   padding: 4px 6px;
 }
+
+.ivu-modal-confirm-head-icon .ivu-icon{ 
+  font-size: 28px;
+}
