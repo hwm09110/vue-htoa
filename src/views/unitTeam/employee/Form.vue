@@ -6,11 +6,11 @@
                 <FormItem label="人员名称：" prop="name">
                     <Input v-model="formValidate.name" placeholder="输入人员名称" />
                 </FormItem>
-                <FormItem label="区域：" prop="area">
+                <!-- <FormItem label="区域：" prop="area">
                     <Select v-model="formValidate.area" filterable>
                         <Option value="1" >1</Option>
                     </Select>
-                </FormItem>   
+                </FormItem>    -->
                 <FormItem label="所属部门：" prop="unit">
                     <Select v-model="formValidate.unit" filterable>
                         <Option value="1" >1</Option>

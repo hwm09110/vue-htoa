@@ -58,10 +58,14 @@
 .flex{
   display: flex;
 }
+.flex-none{
+  flex: none;
+}
 .text_align_center{
   text-align: center;
-
 }
+
+
 // 表格
 .cus-table{
   border-collapse: collapse;

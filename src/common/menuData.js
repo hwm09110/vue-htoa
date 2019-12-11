@@ -176,16 +176,16 @@ export const topNavList = [
             name: "departmentMage_first",
             level_id: '5_1_1'
           },
-          {
-            text: "二级部门",
-            name: "departmentMage_second",
-            level_id: '5_1_2'
-          },
-          {
-            text: "三级部门",
-            name: "departmentMage_third",
-            level_id: '5_1_3'
-          },
+          // {
+          //   text: "二级部门",
+          //   name: "departmentMage_second",
+          //   level_id: '5_1_2'
+          // },
+          // {
+          //   text: "三级部门",
+          //   name: "departmentMage_third",
+          //   level_id: '5_1_3'
+          // },
         ],
       },
       {

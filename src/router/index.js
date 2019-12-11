@@ -19,7 +19,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if(!freeRouteList.includes(routerName)){
-    if(!isLogin){
+    if(isLogin){
       await store.dispatch('getTopNavList') //拉取导航信息
       setNavActiveItem(to.path)
       next()
