@@ -48,11 +48,12 @@ export default {
         const validateUser = (rule,value,callback) => {
           let user = value.trim();
           if(user) {
-            if(!utils.checkPhoneNumber(user)){
-              callback(new Error('手机号码格式不正确'));
-            }else{
-              callback();
-            }
+            // if(!utils.checkPhoneNumber(user)){
+            //   callback(new Error('手机号码格式不正确'));
+            // }else{
+            //   callback();
+            // }
+            callback();
           }else{
             callback();
           }
@@ -102,9 +103,10 @@ export default {
             this.isShow = false
             //保存登录态
             localStorage.setItem('isLogin', 1)
+            localStorage.setItem('userInfo', JSON.stringify(res.extraData))
+            this.$store.commit('SET_USERINFO', res.extraData)
             //开启7天自动登录
             this.rememberAccount();
-            this.$store.dispatch('setLoginStatus', 1)
             setTimeout(()=>{
               this.$router.push({name: "index"})
             },500);
@@ -123,6 +125,7 @@ export default {
         console.log('animate finish!')
       },
 
+      // 记住账号
       rememberAccount () {
         if (this.loginForm.autoLogin) {
           const encrypt_user = utils.encrypt(this.loginForm.user)
@@ -147,7 +150,7 @@ export default {
     },
     created (){
       // 取出cookie，调用接口
-      let isLogin = Cookies.get('isLogin')
+      let isLogin = localStorage.getItem('isLogin')
       //如果已登录，则跳到首页
       if (isLogin) {
         this.$router.push({name: "home"});

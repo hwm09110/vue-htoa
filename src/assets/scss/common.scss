@@ -3,7 +3,7 @@
 // 页面title
 .page-title{
   padding-bottom: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
   border-bottom: solid 1px #ccc;
   display: flex;
   justify-content: space-between;
@@ -21,6 +21,7 @@
 
 // 搜索
 .search-wrap{
+  margin-bottom: 15px;
   .search-time,
   .search-select,
   .search-input{
@@ -65,6 +66,20 @@
   text-align: center;
 }
 
+<<<<<<< HEAD
+=======
+// 字体颜色
+.text-blue{
+  color:#30A5FF;
+} 
+.text-maroon{
+  color:#F9243F;
+}
+.text-muted{
+  color:#5F6468;
+}
+
+>>>>>>> 1f40a0b1d07a77a3f5f3a97ebc1474f5e0629372
 
 // 表格
 .cus-table{

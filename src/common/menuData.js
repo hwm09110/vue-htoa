@@ -162,20 +162,21 @@ export const topNavList = [
     ],
   },
   {
-    text:'单位组织',
-    name:'unitTeam',
+    text: '单位组织',
+    name: 'unitTeam',
     level_id: 5,
     subNav: [
       {
-        text: "部门管理",
-        name: "departmentMage",
+        text: '部门管理',
+        name: 'departmentMage',
         level_id: '5_1',
         subNav: [
           {
-            text: "一级部门",
-            name: "departmentMage_first",
-            level_id: '5_1_1'
+            text: '一级部门',
+            name: 'departmentMage_first',
+            level_id: '5_1_1',
           },
+<<<<<<< HEAD
           // {
           //   text: "二级部门",
           //   name: "departmentMage_second",
@@ -186,38 +187,132 @@ export const topNavList = [
           //   name: "departmentMage_third",
           //   level_id: '5_1_3'
           // },
+=======
+          {
+            text: '二级部门',
+            name: 'departmentMage_second',
+            level_id: '5_1_2',
+          },
+          {
+            text: '三级部门',
+            name: 'departmentMage_third',
+            level_id: '5_1_3',
+          },
+>>>>>>> 1f40a0b1d07a77a3f5f3a97ebc1474f5e0629372
         ],
       },
       {
-        text: "员工管理",
-        name: "employeeMage",
+        text: '员工管理',
+        name: 'employeeMage',
         level_id: '5_2',
-        subNav:[{
-          text: "在职员工",
-          name: "employeeMage_onjob",
-          level_id: '5_2_1'
-        }]
-      }
+        subNav: [
+          {
+            text: '在职员工',
+            name: 'employeeMage_onjob',
+            level_id: '5_2_1',
+          },
+        ],
+      },
     ],
-  },  
+  },
   {
-    text:'平台管理',
-    name:'platformMage',
+    text: '平台管理',
+    name: 'platform',
     level_id: 6,
     subNav: [
       {
-        text: "公司设置",
-        name: "companysite",
+        text: '流程管理',
+        name: 'processMage',
         level_id: '6_1',
         subNav: [
           {
-            text: "职位职级体系",
-            name: "ranksystem",
-            level_id: '6_1_1'
-          }
+            text: '流程类型',
+            name: 'processMage_type',
+            level_id: '6_1_1',
+          },
+          {
+            text: '流程设置',
+            name: 'processMage_setting',
+            level_id: '6_1_2',
+          },
+          {
+            text: '表单类型',
+            name: 'processMage_formType',
+            level_id: '6_1_3',
+          },
+          {
+            text: '表单设置',
+            name: 'processMage_formSetting',
+            level_id: '6_1_4',
+          },
+          {
+            text: '流程权限转移',
+            name: 'processMage_transform',
+            level_id: '6_1_5',
+          },
         ],
       },
-  
+      {
+        text: '系统设置',
+        name: 'systemMage',
+        level_id: '6_2',
+        subNav: [
+          {
+            text: '角色管理',
+            name: 'systemMage_role',
+            level_id: '6_2_1',
+          },
+          {
+            text: '模块管理',
+            name: 'systemMage_module',
+            level_id: '6_2_2',
+          },
+          {
+            text: '菜单管理',
+            name: 'systemMage_menu',
+            level_id: '6_2_3',
+          },
+          {
+            text: '系统管理员',
+            name: 'systemMage_admin',
+            level_id: '6_2_4',
+          },
+        ],
+      },
+      {
+        text: '公司设置',
+        name: 'company',
+        level_id: '6_3',
+        subNav: [
+          {
+            text: '职位职级体系',
+            name: 'company_rank',
+            level_id: '6_3_1',
+          },
+          {
+            text: '城市级别体系',
+            name: 'company_city',
+            level_id: '6_3_2',
+          },
+          {
+            text: '人员类别管理',
+            name: 'company_employee',
+            level_id: '6_3_3',
+          },
+          {
+            text: '会议室设置',
+            name: 'company_meetingroom',
+            level_id: '6_3_4',
+          },
+          {
+            text: '节假日设置',
+            name: 'company_holiday',
+            level_id: '6_3_5',
+          },
+        ],
+      },
     ],
-  },  
-]
+  },
+];
+
+export function filterMenu() {}

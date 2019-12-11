@@ -1,25 +1,20 @@
 <template>
-  <div class="apply-container">
+  <div class="apply-container myApply">
     <div class="page-title">
-      <h2 class="title">我的申请记录</h2>
+      <h2 class="title">我的申请</h2>
     </div>
-    <Tabs value="all" :animated="false">
-      <TabPane label="处理中" name="inPutrocessing">
-        <Table height="calc(100% - 220px)" :columns="table.columns" :data="table.inPutrocessing"></Table>
-      </TabPane>
-      <TabPane label="已完成" name="completed">
-        <Table height="calc(100% - 220px)" :columns="table.columns" :data="table.completed"></Table>
-      </TabPane>
-      <TabPane label="所有" name="all">
-        <Table height="calc(100% - 220px)" :columns="table.columns" :data="table.all"></Table>
-      </TabPane>
-      <TabPane label="已退回" name="hasBeenReturned">
-        <Table height="calc(100% - 220px)" :columns="table.columns" :data="table.hasBeenReturned"></Table>
-      </TabPane>
-      <TabPane label="已撤回" name="withdrawn">
-        <Table height="calc(100% - 220px)" :columns="table.columns" :data="table.withdrawn"></Table>
-      </TabPane>
-    </Tabs>
+    <div class="tab">
+      <Tabs value="all" :animated="false">
+        <TabPane label="处理中" name="inPutrocessing"></TabPane>
+        <TabPane label="已完成" name="completed"></TabPane>
+        <TabPane label="所有" name="all"></TabPane>
+        <TabPane label="已退回" name="hasBeenReturned"></TabPane>
+        <TabPane label="已撤回" name="withdrawn"></TabPane>
+      </Tabs>
+      <i-button type="primary" icon="refresh">刷新</i-button>
+    </div>
+    <Table height="calc(100% - 220px)" :columns="table.columns" :data="table.all"></Table>
+    <Page :total="100" show-total show-elevator />
   </div>
 </template>
 
@@ -128,6 +123,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.myApply {
+  /deep/ .ivu-page {
+    display: flex;
+    justify-content: flex-end;
+    margin: 15px 0;
+  }
+}
 .apply-container {
   .page-title {
     padding-bottom: 15px;

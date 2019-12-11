@@ -3,7 +3,7 @@
     <div class="page-title">
       <h2 class="title">人员详细信息</h2>
       <div class="top-btn">
-        <Button class="btn">返回</Button>
+        <Button class="btn" @click="handleGoBack">返回</Button>
       </div>
     </div>
     <div class="main-wrap">
@@ -11,73 +11,75 @@
         <div class="row-box">
           <div class="info-item">
             <span class="name">姓名：</span>
-            <span class="val">张三丰</span>
+            <span class="val">{{info.user_name}}</span>
           </div>
           <div class="info-item">
             <span class="name">性别：</span>
-            <span class="val">男</span>
+            <span class="val">{{info.gender == 1 ? "男" : "女"}}</span>
           </div>
         </div>
         <div class="row-box">
           <div class="info-item">
             <span class="name">区域：</span>
-            <span class="val">总部</span>
+            <span class="val">{{info.location_name}}</span>
           </div>
           <div class="info-item">
             <span class="name">部门：</span>
-            <span class="val">技术部</span>
+            <span class="val">{{info.dept_name}}</span>
           </div>
         </div>
         <div class="row-box">
           <div class="info-item">
             <span class="name">人员类别：</span>
-            <span class="val">管理</span>
+            <span class="val">{{info.type_name}}</span>
           </div>
           <div class="info-item">
             <span class="name">职位：</span>
-            <span class="val">部门经理</span>
+            <span class="val">{{info.duty}}</span>
           </div>
         </div>
         <div class="row-box">
           <div class="info-item">
             <span class="name">移动电话：</span>
-            <span class="val">13623120521</span>
+            <span class="val">{{info.tel}}</span>
           </div>
           <div class="info-item">
             <span class="name">直接上级：</span>
-            <span class="val">哈哈</span>
+            <span class="val">{{info.monitor_name}}</span>
           </div>
         </div>
         <div class="row-box">
           <div class="info-item">
             <span class="name">短号：</span>
-            <span class="val">052</span>
+            <span class="val">-</span>
           </div>
           <div class="info-item">
             <span class="name">邮箱：</span>
-            <span class="val">1234564@qq.com</span>
+            <span class="val">-</span>
           </div>
         </div>
         <div class="row-box">
           <div class="info-item">
             <span class="name">入职时间：</span>
-            <span class="val">2017-10-01</span>
+            <span class="val">{{info.workdate}}</span>
           </div>
           <div class="info-item">
             <span class="name">办公室号码：</span>
-            <span class="val">123456</span>
+            <span class="val">-</span>
           </div>
         </div>
         <div class="row-box">
           <div class="info-item">
             <span class="name">出生时间：</span>
-            <span class="val">1990-10-01</span>
+            <span class="val">{{info.year}}-{{info.month}}-{{info.day}}</span>
           </div>
         </div>
       </div>
       <div class="portrait">
         <div class="img-box">
-          <img src="../../assets/img/man.png" alt="img">
+          <img :src="info.head_url" alt="img" v-if="info.head_url != ''">
+          <img src="../../assets/img/man.png" alt="img" v-if="info.head_url == '' && userInfo.gender == 1">
+          <img src="../../assets/img/woman.png" alt="img" v-if="info.head_url == '' && userInfo.gender == 2">
         </div>
       </div>
     </div>
@@ -85,14 +87,47 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
 export default {
   name: "TxlDetail",
   data() {
     return {
-
+      info: {}
     }
   },
+  computed: {
+    ...mapState(['userInfo'])
+  },
   methods: {
+    // 返回
+    handleGoBack() {
+      this.$router.go(-1)
+    },
+
+    // 拉取个人信息数据
+    async getPersonalInfo() {
+      try {
+        let params = {}
+        params.user_guid = this.$route.query.user_guid
+        const res = await this.$http.getTxlDetail(params)
+        console.log(res)
+        if(res.code ===  '200'){
+          const info = res.extraData
+          this.info = info
+        }else{
+          this.$Message.warning(res.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    init() {
+      this.getPersonalInfo()
+    }
+  },
+  created() {
+    this.init()
   }
 }
 </script>
@@ -127,7 +162,9 @@ export default {
           font-size: 15px;
           color: #333;
           width: 170px;
-          padding: 6px 10px;
+          height: 27px;
+          line-height: 27px;
+          padding-left: 10px;
           background-color: #F9F9F9;
         }
       }
