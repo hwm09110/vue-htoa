@@ -1,5 +1,5 @@
 <template>
-  <div class="processMage_type">流程类型</div>
+  <div class="process">表单类型</div>
 </template>
 
 <script>
