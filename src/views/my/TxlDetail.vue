@@ -109,7 +109,7 @@ export default {
       try {
         let params = {}
         params.user_guid = this.$route.query.user_guid
-        const res = await this.$http.getPersonInfo(params)
+        const res = await this.$http.getTxlDetail(params)
         console.log(res)
         if(res.code ===  '200'){
           const info = res.extraData
