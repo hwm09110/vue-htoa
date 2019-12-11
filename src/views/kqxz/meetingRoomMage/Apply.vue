@@ -83,33 +83,17 @@
             <th>预约人</th>
             <th>审批情况</th>
           </tr>
-          <tr>
-            <td rowspan="3">一楼会议室</td>
-            <td>12-21 10:20 - 12-21 11:30</td>
-            <td>张三</td>
-            <td>预约成功</td>
-          </tr>
-          <tr>
-            <td>12-21 10:20 - 12-21 11:30</td>
-            <td>张三</td>
-            <td>预约成功</td>
-          </tr>
-          <tr>
-            <td>12-21 10:20 - 12-21 11:30</td>
-            <td>张三</td>
-            <td>预约成功</td>
-          </tr>
-          <tr>
-            <td rowspan="2">二楼会议室</td>
-            <td>12-21 10:20 - 12-21 11:30</td>
-            <td>张三</td>
-            <td>预约成功</td>
-          </tr>
-          <tr>
-            <td>12-21 10:20 - 12-21 11:30</td>
-            <td>张三</td>
-            <td>预约成功</td>
-          </tr>
+          <template v-for="(obj, guid) in bookedInfo">
+            <tr :key="index" v-for="(itemInfo, index) of bookedInfo[guid]">
+              <td :rowspan="bookedInfo[guid].length">{{itemInfo.room_name}}</td>
+              <td>{{itemInfo.stime|formatTime}} - {{itemInfo.etime|formatTime}}</td>
+              <td>{{itemInfo.user_name}}</td>
+              <td>
+                <span v-if="itemInfo.process_status == 2">预约成功</span>
+                <span v-else>审批中</span>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -119,6 +103,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { formatTimestamp } from "@/utils/moment"
 export default {
   name:'Apply',
   data () {
@@ -186,6 +171,7 @@ export default {
       },
       bookedInfo:{}, //会议室预约情况
 
+      applyInfo: {}, //编辑申请单详情
     }
   },
   computed: {
@@ -290,12 +276,48 @@ export default {
       this.$http.addBoardRoomApply(post_data).then(res => {
         if(res.code === '200'){
           this.$Message.success(res.message)
-          
+          this.$router.push({name: "meetingRoomMage_applylist"})
         }else{
           this.$Message.warning(res.message)
         }
       })
       
+    },
+
+    //回填编辑表单
+    fillEditForm(applyInfo) {
+      this.flow_number = applyInfo.flow_number
+      this.formData.theme = applyInfo.theme
+      this.formData.num = applyInfo.num
+      this.formData.room_guid = applyInfo.room_guid
+      this.formData.room_name = applyInfo.room_name
+      this.formData.stime = applyInfo.stime ? new Date(applyInfo.stime*1000) : ""
+      this.formData.etime = applyInfo.etime ? new Date(applyInfo.etime*1000) : ""
+      this.formData.stimeStamps = applyInfo.stime
+      this.formData.etimeStamps = applyInfo.etime
+      this.formData.device = applyInfo.device
+    },
+
+    // 拉取编辑申请单数据
+    async getEditDetailData() {
+      if(!this.$route.query.apply_guid || !this.$route.query.now_step_guid) return
+      try {
+        const params = { 
+          apply_guid: this.$route.query.apply_guid,
+          now_step_guid: this.$route.query.now_step_guid,
+        }
+        const res = await this.$http.getBoardRoomApplyDetail(params)
+        console.log(res)
+        if(res.code ===  '200'){
+          const { info, p_info, room, step_flow, room_dated } = res.extraData
+          this.applyInfo = info
+          this.fillEditForm(info)
+        }else{
+          this.$Message.warning(res.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     async init() {
@@ -306,7 +328,9 @@ export default {
           this.meetingRoomList = room
           this.p_info = p_info
           this.bookedInfo = room_dated
+          console.log(this.bookedInfo)
         }
+        await this.getEditDetailData()
       } catch (error) {
         console.log(error)
       }
@@ -315,6 +339,11 @@ export default {
   },
   created() {
     this.init()
+  },
+  filters: {
+    formatTime(timestamps) {
+      return formatTimestamp(timestamps*1000, "MM-DD HH:mm")
+    }
   }
 }
 </script>
