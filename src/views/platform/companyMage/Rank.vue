@@ -8,7 +8,7 @@
 				<Tabs type="card">
 					<TabPane label="职位">
 						<Row class="process-addBtn" style="margin-bottom: 5px">
-							<i-button type="info" @click="newPosition">新建职位</i-button>
+							<i-button type="info" @click="moda=!moda">新建职位</i-button>
 						</Row>
 						<div class="processMagePost-main">
 							<div class="table-wrap">
@@ -94,6 +94,28 @@
 				</div>
 			</Modal>
 			<!-- 新增弹出框end -->
+			<!-- 编辑职级弹出框 -->
+			<Modal title="Title" v-model="moda2" :mask-closable="false" :transfer="false">
+				<div slot="header" :style="{fontSize: '16px', fontWeight: 600}">{{title}}</div>
+				<Form ref="editForm" :model="editForm" :label-width="80" label-position="left">
+					<FormItem label="职位">
+						<Input v-model="editForm.name"></Input>
+					</FormItem>
+					<FormItem label="序号">
+						<Input v-model="editForm.sort"></Input>
+					</FormItem>
+					<FormItem label="职级">
+						<Select class="search-select" @on-change="change_status" v-model="editForm.dept_name">
+							<Option v-for="item in statusList" :value="item.dept_name" :key="item.id">{{ item.dept_name }}</Option>
+						</Select>
+					</FormItem>
+				</Form>
+				<div slot="footer">
+					<Button type="info" @click="submitEdit">确定</Button>
+					<Button @click="moda2=!moda2">取消</Button>
+				</div>
+			</Modal>
+			<!-- 弹出框end -->
 		</div>
 	</div>
 </template>
@@ -103,8 +125,9 @@
 		data() {
 			return {
 				title: "职位职级体系",
-				moda1: false,
 				moda: false,
+				moda1: false,
+				moda2: false,
 				listCount: 0,
 				listLen: 10,
 				listCurpage: 1,
@@ -114,8 +137,7 @@
 					expand: true,
 					children: []
 				}],
-				statusList: [
-				],
+				statusList: [],
 				columns12: [{
 						title: '序号',
 						key: 'id'
@@ -140,6 +162,13 @@
 					name: "",
 					sort: "",
 					dept_guid: ""
+				},
+				editForm: {
+					dept_guid: "",
+					sort: "",
+					name: "",
+					duty_guid:"",
+					dept_name:"",
 				},
 				listParams: {
 					dept_guid: "",
@@ -197,13 +226,47 @@
 
 				return newData
 			},
-			show(index) {
-				this.$Modal.info({
-					title: 'User Info',
-					content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`
+			show(index) {//编辑职位
+				let self=this;
+				self.moda2=true;
+				self.editForm.sort=self.data6[index].id;
+				self.editForm.name=self.data6[index].duty_name;
+				self.editForm.dept_name=self.data6[index].dept_name;
+				self.editForm.dept_guid=self.data6[index].dept_guid;
+				self.editForm.duty_guid=self.data6[index].duty_guid;
+			},
+			//职位修改
+			change_status(val) {// 筛选状态
+				let self = this;
+    		self.statusList.forEach(function(currentValue, index, array){
+    			if(val==currentValue.dept_name){
+    			self.editForm.dept_guid=currentValue.dept_guid;
+    			}
+    		})
+			},
+			//提交编辑
+			submitEdit(){
+				let self = this;
+				let params;
+				params={
+					duty_guid:self.editForm.duty_guid,
+					sort:self.editForm.sort,
+					name:self.editForm.name,
+					dept_guid:self.editForm.dept_guid
+				} 	
+				self.$http.editduty(params).then(res=>{
+					if(res.code==200){
+						self.$Message.success('修改成功');
+						self.moda2=false;
+						this.init();
+					}else{
+						self.$Message.warning(res.message);
+					}
+				}).catch(ero=>{
+					console.log(ero)
 				})
 			},
-			remove(index) {
+			remove(index) {//删除职位
 //				this.data6.splice(index, 1);
 				console.log(this.data6[index].duty_guid);
 				let self=this;
@@ -255,10 +318,6 @@
 				this.getduty();
 				this.getTreeData()
 			},
-			newPosition(){
-				let self = this;
-				self.moda = true;
-			},
 			submitNewposition(){
 				let self=this;
 				let params;
@@ -280,6 +339,7 @@
 				this.$http.addduty(params).then(res=>{
 					if(res.code==200){
 						self.$Message.success(res.message);
+						self.moda=false;
 						self.init();
 					}else{
 						self.$Message.success(res.message);

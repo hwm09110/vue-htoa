@@ -15,9 +15,9 @@
 			</template>
 		</Table>
 			</div>
-			<div class="cityRank-page">
+			<!--<div class="cityRank-page">
 				<Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />
-			</div>
+			</div>-->
 		</div>
 		<!--新增市级-->
 		<Modal title="Title" v-model="moda" :mask-closable="false" :transfer="false">
@@ -81,44 +81,8 @@
 						align: "center"
 					}
 				],
-				data6: [{
-						order: 18,
-						classification: "品牌推广"
-					},
-					{
-						order: 24,
-						classification: "人事行政"
-					},
-					{
-						order: 30,
-						classification: "采购"
-					},
-					{
-						order: 26,
-						classification: "技术服务"
-					}
-				],
-				statusList: [{
-						name: "全部",
-						value: 0
-					},
-					{
-						name: "进行中",
-						value: 1
-					},
-					{
-						name: "已完成",
-						value: 2
-					},
-					{
-						name: "已退回",
-						value: 3
-					},
-					{
-						name: "已撤销",
-						value: 4
-					}
-				],
+				data6: [],
+				statusList: [],
 				addForm: {
 					cityProvince: "",
 					cityLevel: "",
@@ -137,8 +101,43 @@
 			},
 			remove(index) {
 				this.data6.splice(index, 1);
+			},
+			//获取表格数据
+			async getCitylist() {
+				try {
+					//					this.listParams.page = this.listCurpage
+					const res = await this.$http.citylist()
+					if(res.code === '200') {
+						this.data6 = res.extraData;
+					} else {
+						this.$Message.warning(res.message)
+					}
+				} catch(err) {
+					console.log(err)
+				}
+			},
+			//获取省份数据
+			async getprovlist() {
+				try {
+					//					this.listParams.page = this.listCurpage
+					const res = await this.$http.getprov()
+					if(res.code === '200') {
+						console.log(res)
+					} else {
+						this.$Message.warning(res.message)
+					}
+				} catch(err) {
+					console.log(err)
+				}
+			},
+			init() {
+				this.getCitylist();
+				this.getprovlist();
 			}
-		}
+		},
+		created() {
+			this.init();
+		},
 	};
 </script>
 

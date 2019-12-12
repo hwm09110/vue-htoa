@@ -2,7 +2,7 @@
 	<div class="meetingRoom">
 		<h4 class="process-title">会议室设置</h4>
 		<Row class="process-addBtn" style="margin: 10px 0 5px;">
-			<i-button type="info" @click="moda =! moda">新增</i-button>
+			<i-button type="info" @click="newRoom">新增</i-button>
 		</Row>
 		<div class="meetingRoom-cont">
 			<div class="meetingRoom-table">
@@ -16,27 +16,19 @@
 				</Table>
 			</div>
 			<div class="meetingRoom-page">
-				<Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />
+				<!--<Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />-->
 			</div>
 		</div>
 		<!--新增人员类别-->
 		<Modal title="Title" v-model="moda" :mask-closable="false" :transfer="false">
 			<div slot="header" :style="{fontSize: '16px', fontWeight: 600}">{{title}}</div>
-			<Form ref="addForm" :model="addForm" :label-width="80" label-position="left">
-				<!--<FormItem label="所属省份">
-					<Select class="search-select" v-model="addForm.cityProvince">
-						<Option v-for="item in statusList" :value="item.value" :key="item.value">{{ item.name }}</Option>
-					</Select>
-				</FormItem>-->
-				<FormItem label="会议室编号">
-					<Input v-model="addForm.meetingRoomNum"></Input>
-				</FormItem>
+			<Form ref="addForm" :model="addForm" :label-width="100" label-position="left">
 				<FormItem label="会议室名称">
 					<Input v-model="addForm.meetingRoomName"></Input>
 				</FormItem>
 			</Form>
 			<div slot="footer">
-				<Button type="info">确定</Button>
+				<Button type="info" @click="onsubmit	">确定</Button>
 				<Button @click="moda=!moda">取消</Button>
 			</div>
 		</Modal>
@@ -54,11 +46,11 @@
 				listCurpage: 1,
 				columns12: [{
 						title: "会议室编号",
-						key: "order"
+						key: "room_id"
 					},
 					{
 						title: "会议室名称",
-						key: "classification"
+						key: "room_name"
 					},
 					{
 						title: "操作",
@@ -67,42 +59,122 @@
 						align: "center"
 					}
 				],
-				data6: [{
-						order: 18,
-						classification: "品牌推广"
-					},
-					{
-						order: 24,
-						classification: "人事行政"
-					},
-					{
-						order: 30,
-						classification: "采购"
-					}
-				],
+				data6: [],
 				addForm: {
-					meetingRoomNum: "",
 					meetingRoomName: "",
+					room_guid:""
 
 				}
 			}
 		},
 		methods: {
-			show(index) {
-				this.$Modal.info({
-					title: "User Info",
-					content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`
-				});
+			show(index) {//显示编辑
+				let self = this;
+				self.moda=true;
+				self.addForm.meetingRoomName=self.data6[index].room_name;
+				self.addForm.room_guid=self.data6[index].room_guid;
 			},
-			remove(index) {
-				this.data6.splice(index, 1);
+			remove(index) {//删除
+				let self=this;
+				let params;
+				params={
+					room_guid:self.data6[index].room_guid
+				} 	
+				self.$http.delRoom(params).then(res=>{
+					if(res.code==200){
+						self.$Message.success('删除成功');
+						this.init();
+					}else{
+						self.$Message.warning(res.message);
+					}
+				}).catch(ero=>{
+					console.log(ero)
+				})
+			},
+			newRoom() { //显示新增
+				let self = this;
+				self.moda = true;
+				self.addForm.meetingRoomName = "";
+				self.addForm.room_guid = ""
+			},
+			//新增
+			submitNew(){
+				let self=this;
+				let params;
+				if(self.addForm.meetingRoomName==''){
+					self.$Message.info('请填写会议室名称');
+					 return false;
+				}
+				params={
+					room_name:this.addForm.meetingRoomName,
+				} 	
+				this.$http.addRoom(params).then(res=>{
+					if(res.code==200){
+						self.$Message.success(res.message);
+						self.moda=false;
+						self.init();
+					}else{
+						self.$Message.success(res.message);
+					}
+				}).catch(ero=>{
+					console.log(ero)
+				})
+			},
+			//编辑
+			submitEdit(){
+				let self=this;
+				let params;
+				params={
+					room_name:self.addForm.meetingRoomName,
+					room_guid:self.addForm.room_guid
+				}
+				self.$http.editRoom(params).then(res=>{
+					if(res.code==200){
+						self.$Message.success(res.message);
+						self.moda=false;
+						self.init();
+					}else{
+						self.$Message.success(res.message);
+					}
+				}).catch(ero=>{
+					console.log(ero)
+				})
+			},
+			//提交
+			onsubmit(){
+				let self = this;
+				if(self.addForm.room_guid==""){
+					self.submitNew();
+				}else{
+					self.submitEdit();
+				}
+			},
+			//获取表格数据
+			async getmeetRoom() {
+				try {
+					//					this.listParams.page = this.listCurpage
+					const res = await this.$http.boardRoom()
+					if(res.code === '200') {
+						this.data6 = res.extraData;
+					} else {
+						this.$Message.warning(res.message)
+					}
+				} catch(err) {
+					console.log(err)
+				}
+			},
+			init() {
+				this.getmeetRoom();
 			}
-		}
+		},
+		created() {
+			this.init();
+		},
 	};
 </script>
 
 <style lang="scss" scoped>
-.meetingRoom {
+	.meetingRoom {
 		/deep/ .ivu {
 			&-table {
 				span.edit,

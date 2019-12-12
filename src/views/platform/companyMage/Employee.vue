@@ -2,7 +2,7 @@
 	<div class="peopleManage">
 		<h4 class="process-title">人员类别管理</h4>
 		<Row class="process-addBtn" style="margin: 10px 0 5px;">
-			<i-button type="info" @click="moda =! moda">新增</i-button>
+			<i-button type="info" @click="newEmp">新增</i-button>
 		</Row>
 		<div class="peopleManage-cont">
 			<div class="peopleManage-table">
@@ -16,25 +16,26 @@
 				</Table>
 			</div>
 			<div class="peopleManage-page">
-				<Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />
+				<!--<Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />-->
 			</div>
 		</div>
-		<!--新增人员类别-->
+		<!--新增 修改人员类别-->
 		<Modal title="Title" v-model="moda" :mask-closable="false" :transfer="false">
 			<div slot="header" :style="{fontSize: '16px', fontWeight: 600}">{{title}}</div>
 			<Form ref="addForm" :model="addForm" :label-width="80" label-position="left">
 				<FormItem label="类别序号">
-					<Input v-model="addForm.peopleManageNum"></Input>
+					<Input placeholder="请输入类别序号" v-model="addForm.sort"></Input>
 				</FormItem>
 				<FormItem label="类别名称">
-					<Input v-model="addForm.peopleManageName"></Input>
+					<Input placeholder="请输入类别名称" v-model="addForm.type_name"></Input>
 				</FormItem>
 			</Form>
 			<div slot="footer">
-				<Button type="info">确定</Button>
+				<Button type="info" @click="onsubmit">确定</Button>
 				<Button @click="moda=!moda">取消</Button>
 			</div>
 		</Modal>
+		<!--end-->
 	</div>
 </template>
 
@@ -46,14 +47,15 @@
 				moda: false,
 				listCount: 0,
 				listLen: 10,
+				edit:false,
 				listCurpage: 1,
 				columns12: [{
 						title: "类别序号",
-						key: "order"
+						key: "sort"
 					},
 					{
 						title: "类别名称",
-						key: "classification"
+						key: "type_name"
 					},
 					{
 						title: "操作",
@@ -62,58 +64,126 @@
 						align: "center"
 					}
 				],
-				data6: [{
-						order: 18,
-						classification: "品牌推广"
-					},
-					{
-						order: 24,
-						classification: "人事行政"
-					},
-					{
-						order: 30,
-						classification: "采购"
-					}
-				],
-				statusList: [{
-						name: "全部",
-						value: 0
-					},
-					{
-						name: "进行中",
-						value: 1
-					},
-					{
-						name: "已完成",
-						value: 2
-					},
-					{
-						name: "已退回",
-						value: 3
-					},
-					{
-						name: "已撤销",
-						value: 4
-					}
+				data6: [
 				],
 				addForm: {
-					peopleManageNum: "",
-					peopleManageName: "",
-
+					sort: "",
+					type_name: "",
+					type_guid:""
 				}
 			}
 		},
 		methods: {
-			show(index) {
-				this.$Modal.info({
-					title: "User Info",
-					content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`
-				});
+			show(index) {//显示编辑
+				let self = this;
+				self.moda=true;
+				self.addForm.sort=self.data6[index].sort;
+				self.addForm.type_name=self.data6[index].type_name;
+				self.addForm.type_guid=self.data6[index].type_guid;
 			},
-			remove(index) {
-				this.data6.splice(index, 1);
+			remove(index) {//删除
+				let self=this;
+				let params;
+				params={
+					type_guid:self.data6[index].type_guid
+				} 	
+				self.$http.delusertype(params).then(res=>{
+					if(res.code==200){
+						self.$Message.success('删除成功');
+						this.init();
+					}else{
+						self.$Message.warning(res.message);
+					}
+				}).catch(ero=>{
+					console.log(ero)
+				})
+			},
+			newEmp(){//显示新增
+				let self = this;
+				self.moda=true;
+				self.addForm.sort="";
+				self.addForm.type_name="";
+				self.addForm.type_guid==""
+				
+			},
+			//获取表格数据
+			async getusertype() {
+				try {
+//					this.listParams.page = this.listCurpage
+					const res = await this.$http.getusertype(this.listParams)
+					if(res.code === '200') {
+						this.data6 = res.extraData;
+					} else {
+						this.$Message.warning(res.message)
+					}
+				} catch(error) {
+					console.log(error)
+				}
+			},
+			//新增
+			submitNew(){
+				let self=this;
+				let params;
+				if(self.addForm.sort==''){
+					 self.$Message.info('请填写类别序号');
+					 return false;
+				}else if(self.addForm.type_name==''){
+					self.$Message.info('请填写类别名称');
+					 return false;
+				}
+				params={
+					sort:this.addForm.sort,
+					type_name:this.addForm.type_name,
+				} 	
+				this.$http.addusertype(params).then(res=>{
+					if(res.code==200){
+						self.$Message.success(res.message);
+						self.moda=false;
+						self.init();
+					}else{
+						self.$Message.success(res.message);
+					}
+				}).catch(ero=>{
+					console.log(ero)
+				})
+			},
+			//编辑
+			submitEdit(){
+				let self=this;
+				let params;
+				params={
+					sort:self.addForm.sort,
+					type_name:self.addForm.type_name,
+					type_guid:self.addForm.type_guid
+				}
+				self.$http.editusertype(params).then(res=>{
+					if(res.code==200){
+						self.$Message.success(res.message);
+						self.moda=false;
+						self.init();
+					}else{
+						self.$Message.success(res.message);
+					}
+				}).catch(ero=>{
+					console.log(ero)
+				})
+			},
+			//提交
+			onsubmit(){
+				let self = this;
+				if(self.addForm.type_guid==""){
+					self.submitNew();
+				}else{
+					self.submitEdit();
+				}
+			},
+			init(){
+				this.getusertype();
 			}
-		}
+		},
+		created(){
+			this.init();
+		},
 	};
 </script>
 
