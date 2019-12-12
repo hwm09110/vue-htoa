@@ -59,9 +59,11 @@
 .flex{
   display: flex;
 }
+.flex-none{
+  flex: none;
+}
 .text_align_center{
   text-align: center;
-
 }
 
 // 字体颜色

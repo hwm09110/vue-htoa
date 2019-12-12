@@ -44,6 +44,7 @@ http.interceptors.response.use(res => {
       Vue.prototype.$Message.error(res.data.message)
     }
   }else{
+  	console.log(res)
     Vue.prototype.$Message.error('请求服务器出错！')
   }
   return res;
