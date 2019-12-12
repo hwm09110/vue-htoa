@@ -274,6 +274,8 @@ export default {
       this.formData.hours = applyInfo.hours
       this.formData.sdate = applyInfo.sdate ? new Date(applyInfo.sdate*1000) : ""
       this.formData.edate = applyInfo.edate ? new Date(applyInfo.edate*1000) : ""
+      this.formData.stimeStamps = applyInfo.sdate
+      this.formData.etimeStamps = applyInfo.edate
       this.formData.replace = applyInfo.replaceman
       this.formData.reason = applyInfo.reason
     },

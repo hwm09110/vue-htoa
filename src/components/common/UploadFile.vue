@@ -96,10 +96,10 @@ export default {
 //文件上传
 .uploadfile-wrap{
   display: flex;
-  align-items: center;
   width: 700px;
   .label{
     width: 66px;
+    margin-top: 10px;
   }
   .content{
     flex: 1;
@@ -108,9 +108,6 @@ export default {
       width: 400px;
     }
     .uploaded-file{
-      position: absolute;
-      left: 0;
-      z-index: 100;
       width: 400px;
       border-left: 1px solid #dcdcdc;
       border-right: 1px solid #dcdcdc;

@@ -64,8 +64,9 @@ const getLeaveApplyList = params =>
 const getLeaveCheckList = params =>
   http.get('/hthr/leave/checklist', {params}).then(res => res.data);
 // 请假管理-公司请假记录
-const getLeaveAllList = params =>
-  http.get('/hthr/leave/tasklist', {params}).then(res => res.data);
+const getLeaveAllList = (params) => http.get('/hthr/leave/tasklist', {params}).then(res => res.data);
+// 请假管理-导出公司请假记录
+const exportLeaveAllList = () => `${ process.env.BASE_URL }/hthr/leave/tasklist`;
 // 请假管理-申请详情
 const getLeaveApplyDetail = params =>
   http.get('/hthr/leave/detail_leave', {params}).then(res => res.data);
@@ -101,6 +102,36 @@ const getOvertimeChickList = params =>
 const getOvertimeAllApplyList = params =>
   http.get('/hthr/overtime/tasklist', {params}).then(res => res.data);
 
+  
+
+// 出差管理-拉取申请流程配置
+const getBusinesstripApplyConfig = (params) => http.get('/hthr/businesstrip/apply', {params}).then(res => res.data);
+// 出差管理-提交申请
+const addBusinesstripApply = (params) => http.post('/hthr/businesstrip/addapply', Qs.stringify(params)).then(res => res.data);
+// 出差管理-我的申请列表
+const getBusinesstripApplyList = (params) => http.get('/hthr/businesstrip/applylist', {params}).then(res => res.data);
+// 出差管理-审核列表
+const getBusinesstripCheckList = (params) => http.get('/hthr/businesstrip/checklist', {params}).then(res => res.data);
+// 出差管理-公司出差记录
+const getBusinesstripAllList = (params) => http.get('/hthr/businesstrip/tasklist', {params}).then(res => res.data);
+// 出差管理-导出公司出差记录
+const exportBusinesstripAllList = () => `${ process.env.BASE_URL }/hthr/businesstrip/tasklist`;
+// 出差管理-申请详情
+const getBusinesstripApplyDetail = (params) => http.get('/hthr/businesstrip/detail', {params}).then(res => res.data);
+// 出差管理-上级审核
+const checkForBusinesstripApply = (params) => http.post('/hthr/businesstrip/normalpass', Qs.stringify(params)).then(res => res.data);
+// 出差管理-最终审核
+const checkFinallyForBusinesstripApply = (params) => http.post('/hthr/businesstrip/finalpass', Qs.stringify(params)).then(res => res.data);
+// 出差管理-申请人上传出差报告
+const uploadFileForBusinesstrip = (params) => http.post('/hthr/businesstrip/uploadfile', Qs.stringify(params)).then(res => res.data);
+
+
+
+
+
+
+
+
 export default {
   getTodoList,
   getApplyList,
@@ -128,8 +159,23 @@ export default {
   getLeaveApplyList,
   getLeaveCheckList,
   getLeaveAllList,
+  exportLeaveAllList,
   getLeaveApplyDetail,
   getAnnualvaation,
   checkForLeaveApply,
   checkFinallyForLeaveApply,
-};
+
+
+  getBusinesstripApplyConfig,
+  addBusinesstripApply,
+  getBusinesstripApplyList,
+  getBusinesstripCheckList,
+  getBusinesstripAllList,
+  exportBusinesstripAllList,
+  getBusinesstripApplyDetail,
+  checkForBusinesstripApply,
+  checkFinallyForBusinesstripApply,
+  uploadFileForBusinesstrip,
+
+
+}

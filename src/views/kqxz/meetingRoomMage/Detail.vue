@@ -164,7 +164,8 @@ export default {
         onOk(){
           const post_data = {
             apply_guid: vm.applyInfo.apply_guid,
-            flow_guid: vm.flowInfo[2]?vm.flowInfo[2]["flow_guid"]:"",
+            flow_guid: this.getFlowGuid(),
+            // flow_guid: vm.flowInfo[2]?vm.flowInfo[2]["flow_guid"]:"",
             now_step_guid: vm.applyInfo.now_step_guid,
             applyer_guid: vm.applyInfo.user_guid,
           }
@@ -209,11 +210,24 @@ export default {
       this.$router.push({name: "meetingRoomMage_apply", query: this.$route.query})
     },
 
+    //获取审核人 审核步骤guid
+    getFlowGuid() {
+      let flow_guid = ""
+      Object.keys(this.flowInfo).forEach(key => {
+        let item = this.flowInfo[key]
+        if(item.operator_guid == this.userInfo.user_guid) {
+          flow_guid = item.flow_guid
+        }
+      })
+      return flow_guid
+    },
+
     //审核-同意
     handlePassByCheck() {
       const post_data = {
         apply_guid: this.applyInfo.apply_guid,
-        flow_guid: this.flowInfo[2]?this.flowInfo[2]["flow_guid"]:"",
+        flow_guid: this.getFlowGuid(),
+        // flow_guid: this.flowInfo[2]?this.flowInfo[2]["flow_guid"]:"",
         now_step_guid: this.applyInfo.now_step_guid,
         remark: this.checkForm.content,
       }
@@ -234,7 +248,8 @@ export default {
       }
       const post_data = {
         apply_guid: this.applyInfo.apply_guid,
-        flow_guid: this.flowInfo[2] ? this.flowInfo[2]["flow_guid"] : "",
+        flow_guid: this.getFlowGuid(),
+        // flow_guid: this.flowInfo[2] ? this.flowInfo[2]["flow_guid"] : "",
         now_step_guid: this.applyInfo.now_step_guid,
         applyer_guid: this.applyInfo.user_guid,
         remark: this.checkForm.content,

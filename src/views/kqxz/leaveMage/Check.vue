@@ -87,6 +87,8 @@ export default {
   methods: {
     // 搜索
     handleSearch() {
+      this.listCurpage = 1
+      this.listParams.status = "0"
       this.init()
     },
 

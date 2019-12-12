@@ -83,12 +83,14 @@ export default {
   methods: {
     // 搜索
     handleSearch() {
+      this.listCurpage = 1
       this.init()
     },
 
     //切换tab
     handleSwitchTab(name) {
       this.listParams.status = name
+      this.listCurpage = 1
       this.init()
     },
 

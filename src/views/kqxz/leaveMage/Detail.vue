@@ -251,7 +251,8 @@ export default {
         onOk(){
           const post_data = {
             apply_guid: vm.applyInfo.apply_guid,
-            flow_guid: vm.flowInfo[2]?vm.flowInfo[2]["flow_guid"]:"",
+            flow_guid: vm.getFlowGuid(),
+            // flow_guid: vm.flowInfo[2]?vm.flowInfo[2]["flow_guid"]:"",
             now_step_guid: vm.applyInfo.now_step_guid,
             applyer_guid: vm.applyInfo.user_guid,
           }
@@ -277,22 +278,32 @@ export default {
       this.$router.push({name: "leaveMage_apply", query: this.$route.query})
     },
 
+    //获取审核人 审核步骤guid
+    getFlowGuid() {
+      let flow_guid = ""
+      Object.keys(this.flowInfo).forEach(key => {
+        let item = this.flowInfo[key]
+        if(item.operator_guid == this.userInfo.user_guid) {
+          flow_guid = item.flow_guid
+        }
+      })
+      return flow_guid
+    },
+
     //审核-同意
     async handlePassByCheck() {
       let post_data = {
         apply_guid: this.applyInfo.apply_guid,
         now_step_guid: this.applyInfo.now_step_guid,
+        flow_guid: this.getFlowGuid(),
         remark: this.checkForm.content,
       }
       let res = null
       
       
-      if(this.isShowCheckStep == 1) {// 部门经理
-        post_data['flow_guid'] = this.flowInfo[2]?this.flowInfo[2]["flow_guid"]:""
-
+      if(this.isShowCheckStep == 1) { // 部门经理
         // 小于7天不需要部门总监审批
         if(this.applyInfo < 7) {
-          post_data['flow_guid'] = this.flowInfo[4]?this.flowInfo[4]["flow_guid"]:""
           post_data['v_guid'] = this.applyInfo.v_guid
           post_data['days'] = this.applyInfo.days
           post_data['hours'] = this.applyInfo.hours
@@ -302,10 +313,8 @@ export default {
           res = await this.$http.checkForLeaveApply(post_data)
         }
       }else if(this.isShowCheckStep == 2) { //部门总监
-        post_data['flow_guid'] = this.flowInfo[3]?this.flowInfo[3]["flow_guid"]:""
         res = await this.$http.checkForLeaveApply(post_data)
       }else if(this.isShowCheckStep == 3){ //分管副总 最后审批
-        post_data['flow_guid'] = this.flowInfo[4]?this.flowInfo[4]["flow_guid"]:""
         post_data['v_guid'] = this.applyInfo.v_guid
         post_data['days'] = this.applyInfo.days
         post_data['hours'] = this.applyInfo.hours
@@ -331,16 +340,17 @@ export default {
         apply_guid: this.applyInfo.apply_guid,
         now_step_guid: this.applyInfo.now_step_guid,
         applyer_guid: this.applyInfo.user_guid,
+        flow_guid: this.getFlowGuid(),
         remark: this.checkForm.content,
       }
 
-      if(this.isShowCheckStep == 1) {
-        post_data['flow_guid'] =  this.flowInfo[2] ? this.flowInfo[2]["flow_guid"] : ""
-      }else if(this.isShowCheckStep == 2) {
-        post_data['flow_guid'] =  this.flowInfo[3] ? this.flowInfo[3]["flow_guid"] : ""
-      }else if(this.isShowCheckStep == 3) {
-        post_data['flow_guid'] =  this.flowInfo[4] ? this.flowInfo[4]["flow_guid"] : ""
-      }
+      // if(this.isShowCheckStep == 1) {
+      //   post_data['flow_guid'] =  this.flowInfo[2] ? this.flowInfo[2]["flow_guid"] : ""
+      // }else if(this.isShowCheckStep == 2) {
+      //   post_data['flow_guid'] =  this.flowInfo[3] ? this.flowInfo[3]["flow_guid"] : ""
+      // }else if(this.isShowCheckStep == 3) {
+      //   post_data['flow_guid'] =  this.flowInfo[4] ? this.flowInfo[4]["flow_guid"] : ""
+      // }
 
       this.$http.returnApply(post_data).then(res => {
         if(res.code === '200'){

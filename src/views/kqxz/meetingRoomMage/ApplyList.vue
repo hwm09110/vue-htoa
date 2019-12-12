@@ -71,11 +71,14 @@ export default {
   methods: {
     // 搜索
     handleSearch() {
+      this.listCurpage = 1
+      this.listParams.status = "0"
       this.init()
     },
 
     //切换tab
     handleSwitchTab(name) {
+      this.listCurpage = 1
       this.listParams.type = name
       this.init()
     },

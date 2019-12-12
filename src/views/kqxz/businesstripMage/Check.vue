@@ -2,68 +2,163 @@
   <div class="page-container">
     <div class="page-title">
       <h2 class="title">出差审批</h2>
+      <div class="top-btn">
+        <Button type="primary" class="btn" @click="handleRefresh">刷新</Button>
+      </div>
     </div>
     <div class="tab-wrap">
-      <Tabs value="name1" :animated="false">
-        <TabPane label="待审批" name="name1"></TabPane>
-        <TabPane label="已审批" name="name2"></TabPane>
-        <TabPane label="已完成" name="name3"></TabPane>
-        <TabPane label="全部" name="name4"></TabPane>
-        <TabPane label="已退回" name="name5"></TabPane>
-    </Tabs>
+      <Tabs :value="listParams.status" :animated="false" @on-click="handleSwitchTab">
+        <TabPane :label="item.name" :name="item.value" v-for="(item, index) of statusList" :key="index"></TabPane>
+      </Tabs>
     </div>
     <div class="table-wrap">
-      <Table :columns="tableColumns" :data="tableData"></Table>
+      <Table :columns="tableColumns" :data="tableData" @on-row-click="handleRowClick">
+        <template slot="result" slot-scope="{ row, index }">
+          <span :class="row.result|setStatusClass">{{row.result|convertStatus}}</span>
+        </template>
+      </Table>
     </div>
     <div class="page-wrap">
-      <Page :total="100" show-total show-elevator />
+      <Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />
     </div>
   </div>
 </template>
 
 <script>
+import { formatTimestamp } from "@/utils/moment"
 export default {
   name: "Check",
   data() {
     return {
-      cateList: [],
+      statusList: [
+        {name: "待审核", value: "0"},
+        {name: "已审核", value: "1"},
+        {name: "已完成", value: "2"},
+        {name: "全部", value: "4"},
+        {name: "已退回", value: "3"},
+      ],
       tableColumns: [
         {
           title: '申请人',
-          key: 'applyer'
+          key: 'user_name'
         },
         {
           title: '部门',
-          key: 'department'
+          key: 'dept_name'
         },
         {
           title: '出差时间',
-          key: 'time'
+          key: 'sdate'
         },
         {
           title: '出差地点',
-          key: 'address'
+          key: 'location'
         },
         {
           title: '申请时间',
-          key: 'applytime'
+          key: 'apply_time'
         },
         {
           title: '审批结果',
-          key: 'status'
+          key: 'result',
+          slot: 'result',
         },
       ],
-      tableData: [
-        {
-          address: "事件",
-          department: "技术部",
-          daycount: "2天0小时",
-          time: "2019-12-03 15:20",
-          applytime: "2019-12-01 12:20",
-          applyer: "李白",
-          status: "待审批",
-        },
-      ],
+      tableData: [],
+
+      listCount: 0,
+      listLen: 10,
+      listCurpage: 1,
+      listParams: {
+        status: "0",
+        page: 1,
+      },
+    }
+  },
+  methods: {
+
+    //刷新
+    handleRefresh() {
+      this.listCurpage = 1
+      this.listParams.status = "0"
+      this.init()
+    },
+
+    //切换tab
+    handleSwitchTab(name) {
+      this.listCurpage = 1
+      this.listParams.status = name
+      this.init()
+    },
+
+    //分页
+    handleListPage() {
+      this.init()
+    },
+
+    //点击行查看详情
+    handleRowClick(rowItem) {
+      console.log(rowItem)
+      this.$router.push({name: "businesstripMage_detail", query: {apply_guid: rowItem.apply_guid, now_step_guid: rowItem.now_step_guid}})
+    },
+
+    //数据处理
+    transformData(sourceData) {
+      let newData = sourceData.map(item => {
+        item.apply_time = item.apply_time ? formatTimestamp(item.apply_time*1000, "YYYY-MM-DD HH:mm") : "-"
+        item.sdate = item.sdate ? formatTimestamp(item.sdate*1000, "YYYY-MM-DD HH:mm") : "-"
+        return item
+      })
+      return newData
+    },
+
+    // 拉取列表数据
+    async getTabeData() {
+      try {
+        this.listParams.page = this.listCurpage
+        const res = await this.$http.getBusinesstripCheckList(this.listParams)
+        console.log(res)
+        if(res.code ===  '200'){
+          const { info, count, len } = res.extraData
+          this.listCount = parseInt(count)
+          this.listLen = len || 10
+          this.tableData = this.transformData(info)
+        }else{
+          this.$Message.warning(res.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    init() {
+      this.getTabeData()
+    }
+  },
+  created() {
+    this.init()
+  },
+  filters: {
+    setStatusClass(value) {
+      console.log(value)
+      let sClass = ""
+      if(value == 0) {
+        sClass = "text-blue"
+      }else if(value == 3) {
+        sClass = "text-maroon"
+      }
+      return sClass
+    },
+    convertStatus(value) {
+      let sText = "-"
+      if(value == 0) {
+        sText = "待审批"
+      }else if(value == 1 || value == 4) {
+        sText = "已批准"
+      }else if(value == 3) {
+        sText = "不批准"
+      }
+      return sText
     }
   }
 }

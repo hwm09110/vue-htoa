@@ -31,6 +31,9 @@ const revokeApply = (params) => http.post('/hthr/common/normalcancle', Qs.string
 // 统一退回申请人申请【流程结束】
 const returnApply = (params) => http.post('/hthr/common/normalreturn', Qs.stringify(params)).then(res => res.data);
 
+// 一般确认步骤-退回指定步骤【流程继续】
+const returnApplyBySpecified = (params) => http.post('/hthr/common/returntospecified', Qs.stringify(params)).then(res => res.data);
+
 
 
 
@@ -45,4 +48,5 @@ export default {
     uploadFileByForm,
     revokeApply,
     returnApply,
+    returnApplyBySpecified,
 }

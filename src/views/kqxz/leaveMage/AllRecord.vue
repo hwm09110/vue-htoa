@@ -1,13 +1,13 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-        <h2 class="title">请假申请</h2>
+        <h2 class="title">公司请假记录</h2>
       <div class="top-btn">
-        <Button type="primary" class="btn">
+        <Button type="primary" class="btn" @click="handleExport">
           <Icon type="ios-download-outline" size="22" style="vertical-align:middle;"/>
           <span style="vertical-align:middle;">导出统计信息表</span>
         </Button>
-        <Button class="btn" type="primary">
+        <Button class="btn" type="primary" @click="handleRefresh">
           <Icon type="ios-refresh" size="22" style="vertical-align:middle;"/>
           <span style="vertical-align:middle;">刷新</span>
         </Button>
@@ -20,21 +20,19 @@
       </div>
       <div class="item-box">
         <span class="label">部门 </span>
-        <Select class="search-select" v-model="listParams.dept">
-            <Option v-for="item in deptList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-        </Select>
+        <Input v-model="listParams.dept_name"  @click.native="handleChooseDept" placeholder="点击选择部门" readonly class="search-input" />
       </div>
       <div class="item-box">
         <span class="label">请假类别 </span>
-        <Select class="search-select" v-model="listParams.type">
+        <Select class="search-select" v-model="listParams.type" clearable>
             <Option v-for="item in leaveTypes" :value="item.value" :key="item.value">{{ item.name }}</Option>
         </Select>
       </div>
       <br/>
       <div class="item-box">
         <span class="label">时间范围 </span>
-        <DatePicker v-model="listParams.stime" type="date" placeholder="开始时间" class="search-time"></DatePicker> 至 
-        <DatePicker v-model="listParams.etime" type="date" placeholder="结束时间" class="search-time"></DatePicker>
+        <DatePicker v-model="listParams.stime" @on-change="date =>{ (listParams.stime = date) }" type="date" placeholder="开始时间" class="search-time"></DatePicker> 至 
+        <DatePicker v-model="listParams.etime"  @on-change="date =>{ (listParams.etime = date) }" type="date" placeholder="结束时间" class="search-time"></DatePicker>
       </div>
       <div class="item-box">
         <Button type="primary" @click="handleSearch">查询</Button>
@@ -53,18 +51,24 @@
     <div class="page-wrap">
       <Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />
     </div>
+
+    <!-- 选择部门 弹窗 -->
+    <ChooseDeptModal :show.sync="showChooseDeptModal" @on-finish="handleFinishChooseDept" />
+
   </div>
 </template>
 
 <script>
 import { formatTimestamp } from "@/utils/moment"
 import { mapState } from 'vuex'
+import ChooseDeptModal from "@c/common/ChooseDeptModal"
 export default {
+  components: {
+    ChooseDeptModal
+  },
   name: "AllRecord",
   data() {
     return {
-      deptList: [],
-      cateList: [],
       tableColumns: [
         {
           title: '申请人',
@@ -100,12 +104,15 @@ export default {
       listCurpage: 1,
       listParams: {
         user_name: "", //申请人
+        dept_name: "", //部门名称
         dept: "", //部门guid
         type: "", //请假类别
         stime: "",
         etime: "",
         page: 1,
       },
+
+      showChooseDeptModal: false, //显示选择部门弹窗
     }
   },
   computed: {
@@ -114,6 +121,40 @@ export default {
   methods: {
     // 搜索
     handleSearch() {
+      this.listCurpage = 1
+      this.init()
+    },
+
+    //选择部门
+    handleChooseDept() {
+      this.showChooseDeptModal = true
+    },
+
+    //选择好部门
+    handleFinishChooseDept(res) {
+      console.log(res)
+      this.listParams.dept_name = res.dept_guid ? res.dept_name : ""
+      this.listParams.dept = res.dept_guid
+      this.listParams.page = 1
+      this.getTabeData()
+    },
+
+    //导出
+    handleExport() {
+      let conds = this.listParams
+      let params = ''
+      for(let p in conds){
+        params += p +'='+ conds[p]+ '&'
+      }
+      params = params.substring(0, params.length - 1)
+      const url = this.$http.exportLeaveAllList() + `?${ params }&dc=1`
+      console.log(url)
+      window.open(url)
+    },
+
+    //刷新
+    handleRefresh() {
+      this.listCurpage = 1
       this.init()
     },
 
