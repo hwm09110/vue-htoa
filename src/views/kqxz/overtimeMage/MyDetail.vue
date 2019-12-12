@@ -160,16 +160,47 @@
 </template>
 
 <script>
-import UploadFile from "@c/common/UploadFile";
+// import UploadFile from "@c/common/UploadFile";
+let queryParams = {};
 export default {
-  components: {
-    UploadFile
-  },
-  name: "Detail",
+  // components: {
+  //   UploadFile
+  // },
+  name: "MyDetail",
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    // 拉取个人数据
+    async getApplyInfo(params) {
+      try {
+        const res = await this.$http.getOrAddOvertimeApply(params);
+        console.log("拉取个人数据myDetail", res);
+        if (res.code === "200") {
+          // const { p_info } = res.extraData;
+          // Object.assign(this.p_info, p_info);
+        } else {
+          this.$Message.warning(res.message);
+        }
+      } catch (err) {
+        throw err;
+      }
+    }
+  },
+  created() {
+    this.getApplyInfo(queryParams);
+  },
+  beforeRouteEnter(to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当守卫执行前，组件实例还没被创建
+    console.log("to", to);
+    console.log("from", from);
+    if (from.name === "overtimeMage_myApply") {
+      Object.assign(queryParams, to.query);
+    }
+    next();
+  }
 };
 </script>
 
