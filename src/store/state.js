@@ -4,6 +4,8 @@
  */
 const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {}
 
+import { LEAVE_TYPES } from "@/common/dictionary"
+
 const state = {
   isLogin: localStorage.getItem('isLogin') || null, //登录状态
   userInfo, //登录用户信息
@@ -19,6 +21,8 @@ const state = {
   leftNavActive: null, //左侧导航菜单 active 项
 
   sitePaths: [], //当前页面路径
+
+  leaveTypes: LEAVE_TYPES, //请假类型
 };
 
 export default state;

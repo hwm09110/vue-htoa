@@ -20,8 +20,8 @@
     </div>
     <div class="table-wrap">
       <Table :columns="tableColumns" :data="tableData" @on-row-click="handleRowClick">
-        <template slot="process_status" slot-scope="{ row, index }">
-          <span :class="row.process_status|setStatusClass(row)">{{row.process_status|convertStatus(row)}}</span>
+        <template slot="result" slot-scope="{ row, index }">
+          <span :class="row.result|setStatusClass(row)">{{row.result|convertStatus(row)}}</span>
         </template>
       </Table>
     </div>
@@ -64,7 +64,8 @@ export default {
         },
         {
           title: '操作/结果',
-          key: 'result'
+          key: 'result',
+          slot: 'result'
         },
       ],
       tableData: [],
@@ -88,7 +89,7 @@ export default {
 
     //切换tab
     handleSwitchTab(name) {
-      this.listParams.type = name
+      this.listParams.status = name
       this.init()
     },
 

@@ -2,13 +2,15 @@
   <div class="apply-container allRecord">
     <div class="page-title">
       <h2 class="title">公司加班记录</h2>
+      <Button type="primary" icon="ios-exit-outline" @click="handleExportData">导出统计信息表</Button>
+      <Button type="primary" icon="ios-refresh" @click="handleRefresh">刷新</Button>
     </div>
     <i-form :model="formValidate" :label-width="80" ref="formValidate">
       <Form-item label="申请人" prop="name">
-        <i-input :value.sync="formValidate.name" placeholder="输入申请人姓名关键字"></i-input>
+        <i-input v-model="formValidate.user_name" placeholder="输入申请人姓名关键字"></i-input>
       </Form-item>
       <Form-item label="部门" prop="department">
-        <i-select :model.sync="formValidate.department" placeholder="请选择所在地">
+        <i-select v-model="formValidate.dept_guid" placeholder="请选择所在地">
           <i-option value>全部</i-option>
           <i-option value="shanghai">测试部门</i-option>
           <i-option value="shenzhen">iOS部门</i-option>
@@ -18,49 +20,95 @@
         <Row>
           <i-col span="11">
             <Form-item prop="date">
-              <Date-picker type="date" placeholder="开始时间" :value.sync="formValidate.startDate"></Date-picker>
+              <Date-picker
+                type="date"
+                placeholder="开始时间"
+                v-model="formValidate.stime"
+                @on-change="formValidate.stime=$event"
+              ></Date-picker>
             </Form-item>
           </i-col>
           <i-col span="2" style="text-align: center">-</i-col>
           <i-col span="11">
             <Form-item prop="time">
-              <Date-picker type="date" placeholder="结束时间" :value.sync="formValidate.endDate"></Date-picker>
+              <Date-picker
+                type="date"
+                placeholder="结束时间"
+                v-model="formValidate.etime"
+                @on-change="formValidate.etime=$event"
+              ></Date-picker>
             </Form-item>
           </i-col>
         </Row>
       </Form-item>
       <Form-item>
-        <i-button type="primary" icon="ios-search" @click="handleSubmit('formValidate')">查询</i-button>
+        <i-button type="primary" icon="ios-search" @click="handleSeach">查询</i-button>
       </Form-item>
     </i-form>
-    <Table height="calc(100% - 220px)" :columns="table.columns" :data="table.all"></Table>
-    <Page :total="100" show-total show-elevator />
+    <Table
+      height="calc(100% - 220px)"
+      :columns="table.columns"
+      :data="table.data"
+      @on-row-click="handleRowClick"
+    >
+      <template slot-scope="{ row }" slot="stime">{{ row.stime | formatTime }}</template>
+      <template slot-scope="{ row }" slot="hours">{{ row.hours | formatHours }}</template>
+    </Table>
+    <Page
+      :current.sync="currentPage"
+      :total="listCount"
+      :page-size="listLen"
+      show-total
+      show-elevator
+      @on-change="handleListPage"
+    />
   </div>
 </template>
 
 <script>
+import moment from "moment";
 export default {
+  filters: {
+    formatHours(num) {
+      return `${num}小时`;
+    },
+    formatTime(dateStr) {
+      if (dateStr.length === 10) {
+        return moment(new Date(parseInt(dateStr) * 1000)).format(
+          "YYYY-MM-DD HH:mm"
+        );
+      } else if (dateStr.length === 13) {
+        return moment(new Date(parseInt(dateStr))).format("YYYY-MM-DD HH:mm");
+      } else {
+        return `--`;
+      }
+    }
+  },
   data() {
     return {
+      listCount: 0,
+      listLen: 10,
+      currentPage: 1,
       formValidate: {
-        name: "",
-        department: "",
-        startDate: "",
-        endDate: ""
+        user_name: "",
+        dept_guid: "",
+        stime: "",
+        etime: ""
       },
       table: {
         columns: [
           {
             title: "申请人",
-            key: "name"
+            key: "user_name"
           },
           {
             title: "部门",
-            key: "department"
+            key: "dept_name"
           },
           {
             title: "加班时间",
-            key: "time"
+            key: "stime",
+            slot: "stime"
           },
           {
             title: "加班内容",
@@ -68,78 +116,65 @@ export default {
           },
           {
             title: "加班地点",
-            key: "address"
+            key: "place"
           },
           {
             title: "加班时长",
-            key: "overtimeHours"
+            key: "hours",
+            slot: "hours"
           },
           {
             title: "加班费",
-            key: "overtimePay"
+            key: "money"
           }
         ],
-        // 所有
-        all: [
-          {
-            name: "Ggg",
-            department: "测试部门",
-            time: "2016-10-03 12:32",
-            content: "1111",
-            address: "宏途教育",
-            overtimeHours: "2小时",
-            overtimePay: "--"
-          },
-          {
-            name: "Ggg",
-            department: "测试部门",
-            time: "2016-10-03 12:32",
-            content: "1111",
-            address: "宏途教育",
-            overtimeHours: "2小时",
-            overtimePay: "--"
-          },
-          {
-            name: "Ggg",
-            department: "测试部门",
-            time: "2016-10-03 12:32",
-            content: "1111",
-            address: "宏途教育",
-            overtimeHours: "2小时",
-            overtimePay: "--"
-          },
-          {
-            name: "Ggg",
-            department: "测试部门",
-            time: "2016-10-03 12:32",
-            content: "1111",
-            address: "宏途教育",
-            overtimeHours: "2小时",
-            overtimePay: "--"
-          },
-          {
-            name: "Ggg",
-            department: "测试部门",
-            time: "2016-10-03 12:32",
-            content: "1111",
-            address: "宏途教育",
-            overtimeHours: "2小时",
-            overtimePay: "--"
-          }
-        ]
+        data: []
       }
     };
   },
   methods: {
-    handleSubmit(name) {
-      this.$refs[name].validate(valid => {
-        // if (valid) {
-        //   this.$Message.success("提交成功!");
-        // } else {
-        //   this.$Message.error("表单验证失败!");
-        // }
-      });
+    init() {
+      this.getAllApplyList();
+    },
+    handleListPage() {
+      this.init();
+    },
+    handleSeach() {
+      this.currentPage = 1;
+      this.init();
+    },
+    handleRefresh() {
+      this.init();
+    },
+    handleExportData() {
+      // TODO:导出表格
+    },
+    handleRowClick(data, index) {
+      console.log("点击table行", data);
+    },
+    // 拉取公司加班记录
+    async getAllApplyList() {
+      try {
+        const res = await this.$http.getOvertimeAllApplyList(
+          Object.assign({}, this.formValidate, {
+            page: this.currentPage
+          })
+        );
+        if (res.code === "200") {
+          const { info, count, len } = res.extraData;
+          this.listCount = parseInt(count);
+          this.listLen = len;
+          this.table.data = info;
+        } else {
+          this.$Message.warning(res.message);
+        }
+      } catch (error) {
+        throw error;
+      }
     }
+  },
+  created() {
+    this.init();
   }
 };
 </script>
@@ -169,6 +204,15 @@ export default {
     justify-content: flex-end;
     margin: 15px 0;
   }
+  .page-title {
+    display: flex;
+    h2 {
+      flex: 1;
+    }
+    /deep/ .ivu-btn {
+      margin-left: 16px;
+    }
+  }
 }
 .apply-container {
   .page-title {
@@ -193,8 +237,6 @@ export default {
       font-size: 14px;
       .item-label {
         font-weight: 700;
-      }
-      .item-val {
       }
     }
   }

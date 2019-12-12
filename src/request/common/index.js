@@ -25,6 +25,14 @@ const uploadFile = (params) => http.post('/htfile/process/upload', Qs.stringify(
 // 图片统一上传
 const uploadFileByForm = (params) => http.post('/htfile/process/formupload', params, {headers:{'Content-Type':'multipart/form-data'}}).then(res => res.data);
 
+// 统一撤销申请
+const revokeApply = (params) => http.post('/hthr/common/normalcancle', Qs.stringify(params)).then(res => res.data);
+
+// 统一退回申请人申请【流程结束】
+const returnApply = (params) => http.post('/hthr/common/normalreturn', Qs.stringify(params)).then(res => res.data);
+
+
+
 
 export default {
     checkLogin,
@@ -35,4 +43,6 @@ export default {
     getTopMenuList,
     uploadFile,
     uploadFileByForm,
+    revokeApply,
+    returnApply,
 }

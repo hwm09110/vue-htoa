@@ -5,7 +5,7 @@
     </div>
     <div class="search-wrap">
       <div class="item-box">
-        <span class="label">关键字 </span>
+        <span class="label">关键字</span>
         <Input placeholder="输入标题关键字" class="search-input" clearable v-model="listParams.keyword" />
       </div>
       <div class="item-box">
@@ -17,7 +17,7 @@
         <TabPane label="待处理" name="3"></TabPane>
         <TabPane label="已处理" name="4"></TabPane>
         <TabPane label="全部" name="0"></TabPane>
-    </Tabs>
+      </Tabs>
     </div>
     <div class="table-wrap">
       <Table :columns="tableColumns" :data="tableData">
@@ -27,7 +27,14 @@
       </Table>
     </div>
     <div class="page-wrap">
-      <Page :current.sync="listCurpage" :total="listCount" :page-size="listLen" show-total show-elevator @on-change="handleListPage" />
+      <Page
+        :current.sync="listCurpage"
+        :total="listCount"
+        :page-size="listLen"
+        show-total
+        show-elevator
+        @on-change="handleListPage"
+      />
     </div>
   </div>
 </template>
@@ -38,37 +45,37 @@ export default {
   data() {
     return {
       statusList: [
-        {name: "全部", value: 0},
-        {name: "已完成", value: 1},
-        {name: "已退回", value: 2},
-        {name: "进行中", value: 3},
+        { name: "全部", value: 0 },
+        { name: "已完成", value: 1 },
+        { name: "已退回", value: 2 },
+        { name: "进行中", value: 3 }
       ],
       tableColumns: [
         {
-          title: '工作流',
-          key: 'apply_name'
+          title: "工作流",
+          key: "apply_name"
         },
         {
-          title: '当前节点',
-          key: 'now_step_name'
+          title: "当前节点",
+          key: "now_step_name"
         },
         {
-          title: '创建部门',
-          key: 'dept_name'
+          title: "创建部门",
+          key: "dept_name"
         },
         {
-          title: '创建人',
-          key: 'insert_operator_name'
+          title: "创建人",
+          key: "insert_operator_name"
         },
         {
-          title: '创建时间',
-          key: 'apply_time'
+          title: "创建时间",
+          key: "apply_time"
         },
         {
-          title: '流程状态',
-          key: 'process_status',
-          slot: 'process_status',
-        },
+          title: "流程状态",
+          key: "process_status",
+          slot: "process_status"
+        }
       ],
       tableData: [],
 
@@ -78,83 +85,81 @@ export default {
       listParams: {
         type: "0",
         keyword: "",
-        page: 1,
-      },
-    }
+        page: 1
+      }
+    };
   },
   methods: {
     // 搜索
     handleSearch() {
-      this.init()
+      this.init();
     },
 
     //切换tab
     handleSwitchTab(name) {
-      this.listParams.type = name
-      this.init()
+      this.listParams.type = name;
+      this.init();
     },
 
     //分页
     handleListPage() {
-      this.init()
+      this.init();
     },
 
     // 拉取列表数据
     async getTabeData() {
       try {
-        this.listParams.page = this.listCurpage
-        const res = await this.$http.getTodoList(this.listParams)
-        console.log(res)
-        if(res.code ===  '200'){
-          const { info, count, len } = res.extraData
-          this.listCount = parseInt(count)
-          this.listLen = len
-          this.tableData = info
-        }else{
-          this.$Message.warning(res.message)
+        this.listParams.page = this.listCurpage;
+        const res = await this.$http.getTodoList(this.listParams);
+        if (res.code === "200") {
+          const { info, count, len } = res.extraData;
+          this.listCount = parseInt(count);
+          this.listLen = len;
+          this.tableData = info;
+        } else {
+          this.$Message.warning(res.message);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     init() {
-      this.getTabeData()
+      this.getTabeData();
     }
   },
   created() {
-    this.init()
+    this.init();
   },
   filters: {
     setStatusClass(value) {
-      console.log(value)
-      let sClass = ""
-      if(value == 1) {
-        sClass = ""
-      }else if(value == 2) {
-        sClass = "text-blue"
-      }else if(value == 3) {
-        sClass = "text-maroon"
+      console.log(value);
+      let sClass = "";
+      if (value == 1) {
+        sClass = "";
+      } else if (value == 2) {
+        sClass = "text-blue";
+      } else if (value == 3) {
+        sClass = "text-maroon";
       }
-      return sClass
+      return sClass;
     },
     convertStatus(value) {
-      let sText = ""
-      if(value == 1) {
-        sText = "进行中"
-      }else if(value == 2) {
-        sText = "已完成"
-      }else if(value == 3) {
-        sText = "已退回"
+      let sText = "";
+      if (value == 1) {
+        sText = "进行中";
+      } else if (value == 2) {
+        sText = "已完成";
+      } else if (value == 3) {
+        sText = "已退回";
       }
-      return sText
+      return sText;
     }
   }
-}
+};
 </script>
 
 
 <style lang="scss" scoped>
-
 </style>
 
