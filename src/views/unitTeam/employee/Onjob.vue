@@ -11,7 +11,7 @@
             <div>
                 <Button type="primary" style="margin-right:15px" @click="handleBtn('add')">新增人员</Button>
                 <Button type="primary" style="margin-right:15px" @click="handleBtn('export')">导出excel</Button>
-                <Button type="primary" style="margin-right:15px">导入人员</Button>
+                <Button type="primary" style="margin-right:15px" @click="handleUpload">导入人员</Button>
 
                 <a class="text" :href="baseUrl+'/hthr/organization/getusertml'" target="view_window">（导入仅限xlsx文件，下载导入模板）</a>
 
@@ -35,6 +35,7 @@
             </div>
 
         </section>
+        <input type="file" id="uploadInput" style="display:none;" @change="handleInputChange">
     </div>
 </template>
 
@@ -189,12 +190,39 @@ export default {
               }
           })
       },
+      // 导入人员
+      handleUpload(){
+          document.querySelector("#uploadInput").click();
+      },
+      // 处理上传的文件
+        handleInputChange(ev) {
+        let files = Array.from(ev.target.files),
+            file = files[0],
+            fileType = file.name.substring(file.name.lastIndexOf("."));
+        if (file) {
+            if (fileType === ".xlsx" || fileType === ".xls") {
+                let form = new FormData();
+                form.append("userfile",file);
+                this.$http.importuser(form).then( res => {
+                    if(res.code == 200){
+                        this.$Message.success(res.message);
+                    }else {
+                        this.$Message.warning(res.message);
+                    }
+                })
+            } else {
+            this.$Message.warning("请选择正确的文件类型！");
+            }
+        }
+        document.querySelector("#uploadInput").value = "";
+        },
       handleBtn(type,item){
           switch(type){
               case 'add':
                   this.$router.push({ name : "employeeMage_form",query:{type:'add'}});
                   break;
               case 'edit':
+                  this.$router.push({ name : "employeeMage_form",query:{type:'edit'}});
                   break;
               case 'delete':
                     this.$Modal.confirm({

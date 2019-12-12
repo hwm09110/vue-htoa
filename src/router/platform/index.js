@@ -14,11 +14,21 @@ const FormType = () =>
     /* webpackChunkName: "processMage" */
     '../../views/platform/processMage/FormType.vue'
   );
+
+const SettingStep = () =>
+import(
+  /* webpackChunkName: "processMage" */
+  '../../views/platform/processMage/SettingStep.vue'
+);
+
 const FormSetting = () =>
   import(
     /* webpackChunkName: "processMage" */
     '../../views/platform/processMage/FormSetting.vue'
   );
+
+
+  
 const Transform = () =>
   import(
     /* webpackChunkName: "processMage" */
@@ -87,6 +97,13 @@ export default [
     meta: {title: '流程管理-流程设置'},
     component: Setting,
   },
+  {
+    path: 'platform/processMage/settingStep',
+    name: 'processMage_settingStep',
+    meta: {title: '流程管理-流程设置'},
+    component: SettingStep,
+  },
+  
   {
     path: 'platform/processMage/formType',
     name: 'processMage_formType',

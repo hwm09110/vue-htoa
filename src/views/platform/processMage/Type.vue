@@ -2,30 +2,26 @@
   <div class="process">
     <h4 class="process-title">流程分类列表</h4>
     <Row class="process-addBtn">
-      <i-button type="info" @click="moda =! moda">新增</i-button>
+      <i-button type="info" @click="handleBtn('add')">新增</i-button>
     </Row>
-    <Table stripe :columns="columns12" :data="data6">
-      <template slot-scope="{ row, index }" slot="action">
+    <Table stripe :columns="columns" :data="data">
+      <template slot-scope="{ row }" slot="action">
         <!-- <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">编辑</Button> -->
         <!-- <Button type="error" size="small" @click="remove(index)">删除</Button> -->
-        <span class="edit" @click="show(index)">编辑</span>
-        <span class="delete" @click="remove(index)">删除</span>
+        <span class="edit" @click="handleBtn('edit',row)">编辑</span>
+        <span class="delete" @click="remove(row)">删除</span>
       </template>
     </Table>
-    <Modal title="Title" v-model="moda" :mask-closable="false" :transfer="false">
+    <Modal :title="type== 'add'?'添加':'编辑'" v-model="moda" :mask-closable="false" :loading="loading" :transfer="false" @on-ok="handleOk('addForm')" @on-cancel="handleCancel('addForm')" >
       <div slot="header" :style="{fontSize: '16px', fontWeight: 600}">{{title}}</div>
-      <Form ref="addForm" :model="addForm" :label-width="80" label-position="left">
-        <FormItem label="分类名称">
-          <Input v-model="addForm.name"></Input>
+      <Form ref="addForm" :model="addForm" :label-width="80" :rules="ruleForm" label-position="left">
+        <FormItem label="分类名称" prop="name" >
+          <Input v-model="addForm.name" />
         </FormItem>
-        <FormItem label="排序">
-          <Input v-model="addForm.order"></Input>
+        <FormItem label="排序" prop="sort" >
+          <InputNumber :min="1" v-model="addForm.sort"></InputNumber>
         </FormItem>
       </Form>
-      <div slot="footer">
-        <Button type="error">确定</Button>
-        <Button>取消</Button>
-      </div>
     </Modal>
   </div>
 </template>
@@ -35,15 +31,17 @@ export default {
   data() {
     return {
       title: "流程分类",
+      type:'add',
+      loading:true,
       moda: false,
-      columns12: [
+      columns: [
         {
           title: "序号",
-          key: "order"
+          key: "sort"
         },
         {
           title: "分类名称",
-          key: "classification"
+          key: "type_name"
         },
         {
           title: "操作",
@@ -52,39 +50,114 @@ export default {
           align: "center"
         }
       ],
-      data6: [
-        {
-          order: 18,
-          classification: "品牌推广"
-        },
-        {
-          order: 24,
-          classification: "人事行政"
-        },
-        {
-          order: 30,
-          classification: "采购"
-        },
-        {
-          order: 26,
-          classification: "技术服务"
-        }
+      data: [
+    
       ],
       addForm: {
         name: "",
-        order: ""
+        sort: 1,
+        type_guid:''
+      },
+      ruleForm:{
+        name: [
+            { required: true, message: '分类名称不能为空', trigger: 'blur' }
+        ],
+        sort: [
+            { type:'number', required: true, message: '分类排序不能为空', trigger: 'blur' }
+        ],
       }
     };
   },
+  created(){
+    this.getProcessType();
+  },
   methods: {
-    show(index) {
-      this.$Modal.info({
-        title: "User Info",
-        content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`
-      });
+    // 获取列表
+    getProcessType(){
+      this.$http.getProcessType().then( res => {
+        if(res.code == 200){
+          this.data = res.extraData.ptype
+        }
+      })
     },
-    remove(index) {
-      this.data6.splice(index, 1);
+    // 编辑回填
+    fillForm(item){
+      this.addForm.name = item.type_name
+      this.addForm.sort = parseInt(item.sort)
+      this.addForm.type_guid = item.type_guid
+    },
+    handleBtn(type,item){
+      switch(type){
+        case 'add':
+            this.type = 'add';
+            this.moda = true;
+          break;
+        case 'edit':
+            this.type = 'edit';
+            this.moda = true;    
+            this.fillForm(item);      
+          break;  
+      }
+    },
+    async handleType(){
+      let res = '';
+      if(this.type == 'add'){
+        delete this.addForm.type_guid;
+        res = await this.$http.addProcessType(this.addForm)
+      }else {
+        res = await this.$http.editProcessType(this.addForm)
+        
+      }
+      if(res.code == 200){
+        this.moda = false;
+        this.handleCancel('addForm');
+        this.getProcessType();
+        this.$Message.success(res.message);
+      }else {
+        this.loading = false;
+        setTimeout(() =>{
+          this.loading = true;
+        },100) 
+      }
+
+    },
+    handleOk(v){
+    this.$refs[v].validate((valid) => {
+          if (valid) {
+              this.handleType();
+          } else {
+              this.loading = false;
+              setTimeout(() =>{
+              this.loading = true;
+              },100)                   
+          }
+      })
+    },
+    handleCancel(name){
+      this.$refs[name].resetFields();
+    },
+    // 删除
+    delProcessType(type_guid){
+      this.$http.delProcessType({type_guid}).then( res => {
+        if(res.code == 200){
+          this.getProcessType();
+          this.$Message.success(res.message);
+        }else{  
+          this.$Message.error(res.message);
+        }
+      })
+    },
+    
+    remove(item) {
+      this.$Modal.confirm({
+          title: '是否删除？',
+          onOk: () => {
+              this.delProcessType(item.type_guid);
+          },
+          onCancel: () => {
+            
+          }
+      });
     }
   }
 };
